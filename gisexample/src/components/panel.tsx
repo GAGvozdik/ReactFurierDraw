@@ -16,14 +16,36 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import styles from './panelStyles.module.scss';
+import { makeStyles } from '@mui/material/styles';
+import theme from './theme';  
+
+import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
+
 
 interface SlidingPanelProps {
   className?: string; // Добавьте className
+  theme?: Theme;
 }
+
+// const useStyles = makeStyles((theme) => ({
+//   // Дополнительные стили для SlidingPanel (если нужно)
+//   slidingPanel: {
+//     // ... 
+//   },
+//   // Используйте zIndex из темы для Drawer внутри SlidingPanel
+//   drawer: {
+//     zIndex: theme.zIndex.drawer, 
+//   },
+// }));
 
 
 // Компонент для шапки с кнопками меню
 function SlidingPanel(props: SlidingPanelProps) {
+
+
+
+
 
     const [open, setOpen] = React.useState(false);
 
@@ -32,9 +54,9 @@ function SlidingPanel(props: SlidingPanelProps) {
     };
   
     const DrawerList = (
-      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Box sx={{ width: 250 }} role="presentation" >
         <List>
-          {['lambert', 'wgs84'].map((text, index) => (
+          {['lambert', 'lambert', 'wgs84'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
 
@@ -51,13 +73,13 @@ function SlidingPanel(props: SlidingPanelProps) {
     return (
       <div>
         
-        <MenuIcon onClick={toggleDrawer(true)}>
+        <MenuIcon onClick={toggleDrawer(open == true ? (false) : (true))}>
 
         </MenuIcon>
         {/* <Button onClick={toggleDrawer(true)}>Open drawer</Button> */}
         
         
-        <Drawer open={open} onClose={toggleDrawer(false)}>
+        <Drawer className={styles.drawer} open={open} >
           {DrawerList}
         </Drawer>
       </div>

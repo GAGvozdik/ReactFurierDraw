@@ -14,24 +14,29 @@ import { createStyles, makeStyles } from '@mui/material/styles'; // Или impor
 import { Theme } from '@mui/material/styles'; 
 
 import SlidingPanel from '../../src/components/panel'
+import styles from './panelStyles.module.scss';
+import theme from './theme';
 
 interface HeaderProps {
   className?: string; // Добавьте className
   classes?: any; // Добавьте className
+  theme?: Theme;
+
 }
 
 // Компонент для шапки с кнопками меню
 function Header(props: HeaderProps) {
-
+  const classes = theme;
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }}  className={styles.header}>
       <AppBar position="static">
         <Toolbar variant="dense">
           <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             
             <SlidingPanel />
+            
           </IconButton>
           <Typography variant="h6" color="inherit" component="div">
             WGS84 to Lambert Conic 32
