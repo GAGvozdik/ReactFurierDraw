@@ -19,6 +19,23 @@ declare module '@mui/material/styles' {
           };
         };
       };
+      
+    }
+  }
+
+// Расширяем тип Components для добавления MainMap
+declare module '@mui/material/styles' {
+    interface Components {
+      AppBar?: {
+        styleOverrides?: {
+          root?: {
+            zIndex?: 3,
+            position?: 'absolute',
+            backgroundColor: '#3D7EBF',
+          }
+        }
+      };
+
     }
   }
 
@@ -73,6 +90,8 @@ const theme = createTheme({
           }
         }
       },
+
+
       MuiDrawer: {
         styleOverrides: {
           root: {
@@ -92,7 +111,16 @@ const theme = createTheme({
             paddingTop: '64px',  // Высота AppBar
           }
         }
-      }
+      },
+      AppBar: {
+        styleOverrides: {
+          root: {
+            zIndex: 3,
+            position: 'absolute',
+            backgroundColor: '#3D7EBF',
+          }
+        }
+      },
     }
   });
 
