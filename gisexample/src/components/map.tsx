@@ -33,24 +33,12 @@ export default function MainMap(props: MapProps) {
 
     return (
       <>
-      {props.pr == 'WGS84' ? (
-
         <div style={{ width: '100vw', height: '100vh' }}>
-          <MapContainer center={[51, 50]} zoom={5} style={{ height: '100%' }}>
+          <MapContainer center={[51, 50]} zoom={5} style={{ height: '100%' }} zoomControl={false}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           </MapContainer>
         </div>
-
-      ) : (
-
-        <div>
-          <MapWithPolygons />
-        </div>
-
-      )}
-      
       </>
-
     );
   };
 

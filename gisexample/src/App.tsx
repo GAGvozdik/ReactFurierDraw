@@ -3,6 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import Header from '../src/components/header'
 import MainMap from '../src/components/map'
+import IndexPage from '../src/components/rasterMap'
+import BasicSimpleTreeView from '../src/components/catalog'
+import MapWithPolygons from '../src/components/MapWithPolygons'
 import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
@@ -37,7 +40,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
+import FolderIcon from '@mui/icons-material/Folder';
 import { useState } from 'react';
 
 const drawerWidth = 240;
@@ -124,16 +127,24 @@ function App() {
   };
   
 
+  const [isTree, setIsTree] = useState(true); 
+
+
+
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    
   };
 
   const handleDrawerClose = () => {
+    setIsTree(true);
     setOpen(false);
+    
+
   };
 
   return (
@@ -176,10 +187,11 @@ function App() {
 
 
         <List>
-          {['Lambert Conic', 'WGS84'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {/* ['Lambert Conic', 'WGS84', 'Catalog'] */}
+            
+            <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-              onClick={() => handleListItemClick(text)} // Добавляем обработчик клика
+              onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -193,13 +205,74 @@ function App() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <ChangeHistoryIcon /> : <RectangleIcon />}
+                  
+                  <ChangeHistoryIcon />
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={'Lambert Conic'} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-          ))}
+         
+            
+            <ListItem key={'WGS84'} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              onClick={() => handleListItemClick('WGS84')} // Добавляем обработчик клика
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  
+                 <RectangleIcon />
+                </ListItemIcon>
+                <ListItemText primary={'WGS84'} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+         
+            
+            {/* <ListItem key={'Catalog'} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              onClick={() => setIsTree(!isTree)} // Добавляем обработчик клика
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  
+                  <FolderIcon onClick={handleDrawerOpen}/>
+                </ListItemIcon>
+                <ListItemText primary={'Catalog'} sx={{ opacity: open ? 1 : 0 }} />
+                
+              </ListItemButton>
+            </ListItem> */}
+         
+
+            {isTree == false ? <BasicSimpleTreeView /> : <></>}
+
+
+
+
         </List>
+
+
+
+        
+
 
         <Divider />
 
@@ -209,7 +282,23 @@ function App() {
         
 
         {/* <MainMap theme={theme} /> */}
-        <MainMap theme={theme} pr={pr} />
+
+        {pr == 'WGS84' ? (
+
+          <div>
+          {/* <MapWithPolygons /> */}
+          <IndexPage />
+          </div>
+
+        ) : (
+
+          <div>
+           <MainMap theme={theme} pr={pr} />           
+                      
+          </div>
+
+        )}
+        
       </Box>
     </Box>
 

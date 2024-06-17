@@ -95,7 +95,7 @@ const theme = createTheme({
       MuiDrawer: {
         styleOverrides: {
           root: {
-            zIndex: 2,
+            // zIndex: 2,
             position: 'absolute',
             top: '64px',  // Высота AppBar
           }
@@ -105,7 +105,7 @@ const theme = createTheme({
       MainMap: {
         styleOverrides: {
           root: {
-            zIndex: 1,
+            // zIndex: 1,
             position: 'absolute',
             top: '64px',  // Высота AppBar
             paddingTop: '64px',  // Высота AppBar
@@ -115,7 +115,7 @@ const theme = createTheme({
       AppBar: {
         styleOverrides: {
           root: {
-            zIndex: 3,
+            // zIndex: 3,
             position: 'absolute',
             backgroundColor: '#3D7EBF',
           }
