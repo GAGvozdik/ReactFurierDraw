@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 // import Header from '../src/components/header'
@@ -146,6 +146,11 @@ function App() {
 
   };
 
+
+
+
+
+
   return (
 
 
@@ -286,6 +291,8 @@ function App() {
 
           <div>
           <MapWithPolygons />
+
+
           {/* <IndexPage /> */}
           </div>
 
