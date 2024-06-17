@@ -13,8 +13,8 @@ import 'leaflet/dist/leaflet.css';
 import {  MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Theme } from '@mui/material/styles'; 
 
-import SlidingPanel from '../../src/components/panel'
-import MapWithPolygons from '../../src/components/MapWithPolygons'
+// import SlidingPanel from '../../src/components/panel'
+
 import styles from './panelStyles.module.scss';
 import theme from './theme';
 

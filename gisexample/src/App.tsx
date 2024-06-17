@@ -1,9 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Header from '../src/components/header'
-import MainMap from '../src/components/map'
-import IndexPage from '../src/components/rasterMap'
+// import Header from '../src/components/header'
+import MainMap from '../src/components/map';
 import BasicSimpleTreeView from '../src/components/catalog'
 import MapWithPolygons from '../src/components/MapWithPolygons'
 import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
@@ -286,8 +285,8 @@ function App() {
         {pr == 'WGS84' ? (
 
           <div>
-          {/* <MapWithPolygons /> */}
-          <IndexPage />
+          <MapWithPolygons />
+          {/* <IndexPage /> */}
           </div>
 
         ) : (
