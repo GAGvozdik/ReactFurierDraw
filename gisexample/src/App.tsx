@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 // import Header from '../src/components/header'
 import MainMap from '../src/components/map';
 import BasicSimpleTreeView from '../src/components/catalog'
-import MapWithPolygons from '../src/components/MapWithPolygons'
+import MapWithPolygons from './components/oceanMapWGS'
 import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';

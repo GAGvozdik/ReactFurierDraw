@@ -15,7 +15,6 @@ import { Theme } from '@mui/material/styles';
 
 // import SlidingPanel from '../../src/components/panel'
 
-import styles from './panelStyles.module.scss';
 import theme from './theme';
 
 
