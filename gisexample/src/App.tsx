@@ -289,19 +289,14 @@ function App() {
         {pr == 'WGS84' ? (
 
           <div>
-          <MapWithPolygons />
-
-
-          {/* <IndexPage /> */}
+            <MainMap />  
+            {/* <IndexPage /> */}
           </div>
 
         ) : (
-
           <div>
-           <MainMap theme={theme} pr={pr} />           
-                      
+            <MapWithPolygons />                  
           </div>
-
         )}
         
       </Box>
