@@ -40,8 +40,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useState } from 'react';
+import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 
-const drawerWidth = 240;
+
+const drawerWidth = 350;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -153,12 +155,12 @@ function App() {
   return (
 
 
-    <div className="App">
+    <div className="App" >
 
       <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box>
 
-      <AppBar theme={theme} position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{ backgroundColor: '#318DC2' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -180,8 +182,13 @@ function App() {
       </AppBar>
 
       
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+    <Drawer
+      variant="permanent"
+      open={open}
+      
+    >
+
+        <DrawerHeader >
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
@@ -216,7 +223,7 @@ function App() {
             </ListItem>
          
             
-            <ListItem key={'WGS84'} disablePadding sx={{ display: 'block' }}>
+            <ListItem key={'WGS84'} disablePadding>
               <ListItemButton
               onClick={() => handleListItemClick('WGS84')} // Добавляем обработчик клика
                 sx={{
@@ -233,40 +240,50 @@ function App() {
                   }}
                 >
                   
-                 <RectangleIcon />
+                 <RectangleOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary={'WGS84'} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
          
             
-            {/* <ListItem key={'Catalog'} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-              onClick={() => setIsTree(!isTree)} // Добавляем обработчик клика
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  
-                  <FolderIcon onClick={handleDrawerOpen}/>
-                </ListItemIcon>
-                <ListItemText primary={'Catalog'} sx={{ opacity: open ? 1 : 0 }} />
+            <ListItem key={'Catalog'} disablePadding sx={{ display: 'block' }} >
+            
+              <Divider />
+
+              {/*<BasicSimpleTreeView />*/}
+
+              {isTree == false ? <BasicSimpleTreeView /> : 
+                    <> 
+                      <ListItemButton
+                      onClick={() => setIsTree(!isTree)} // Добавляем обработчик клика
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: open ? 'initial' : 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <FolderIcon onClick={handleDrawerOpen}/>
+                        </ListItemIcon>
+                      </ListItemButton>
+                    </>
+                  }
+
+              {/*<ListItemText primary={'Catalog'} sx={{ opacity: open ? 1 : 0 }} />*/}
                 
-              </ListItemButton>
-            </ListItem> */}
+            </ListItem>
          
 
-            {isTree == false ? <BasicSimpleTreeView /> : <></>}
+            
 
+      <Divider />
 
 
 
@@ -274,14 +291,15 @@ function App() {
 
 
 
-        
+{/*                  sx={{
+            ...(open && { width: '600px' })
+          }}
+*/}
 
-
-        <Divider />
-
+  
       </Drawer>
-      <Box component="main">
-        <DrawerHeader />
+      <Box component="main" >
+        <DrawerHeader/>
         
 
         {/* <MainMap theme={theme} /> */}
