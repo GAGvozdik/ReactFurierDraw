@@ -2,8 +2,9 @@ import React, {useEffect} from 'react';
 import './App.css';
 // import Header from '../src/components/header'
 import MainMap from '../src/components/map';
-import BasicSimpleTreeView from '../src/components/catalog'
-import MapWithPolygons from './components/oceanMapWGS'
+import BasicSimpleTreeView from '../src/components/catalog';
+import MapWithPolygons from './components/oceanMapWGS';
+import LambConic from './components/lambCone';
 import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
@@ -38,6 +39,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useState } from 'react';
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
@@ -215,8 +217,8 @@ function App() {
                     justifyContent: 'center',
                   }}
                 >
-                  
-                  <ChangeHistoryIcon />
+              
+                  <CircleOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary={'Lambert Conic'} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -246,12 +248,34 @@ function App() {
               </ListItemButton>
             </ListItem>
          
-            
-            <ListItem key={'Catalog'} disablePadding sx={{ display: 'block' }} >
+
+            <ListItem key={'Lambert Conic Zone'} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              onClick={() => handleListItemClick('Lambert Conic Zone')} // Добавляем обработчик клика
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  
+                  <ChangeHistoryIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Lambert Conic'} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+
+
+            {/* <ListItem key={'Catalog'} disablePadding sx={{ display: 'block' }} >
             
               <Divider />
-
-              {/*<BasicSimpleTreeView />*/}
 
               {isTree == false ? <BasicSimpleTreeView /> : 
                     <> 
@@ -276,26 +300,13 @@ function App() {
                     </>
                   }
 
-              {/*<ListItemText primary={'Catalog'} sx={{ opacity: open ? 1 : 0 }} />*/}
-                
-            </ListItem>
+            </ListItem> */}
          
 
             
 
       <Divider />
-
-
-
-        </List>
-
-
-
-{/*                  sx={{
-            ...(open && { width: '600px' })
-          }}
-*/}
-
+      </List>
   
       </Drawer>
       <Box component="main" >
@@ -312,8 +323,19 @@ function App() {
           </div>
 
         ) : (
+          
           <div>
-            <MapWithPolygons />                  
+            { pr == 'Lambert Conic' ? (
+                <div>
+                  <LambConic />
+                </div>
+              ) : (
+                <div>
+                  <MapWithPolygons /> 
+                </div>
+              )
+            } 
+            
           </div>
         )}
         

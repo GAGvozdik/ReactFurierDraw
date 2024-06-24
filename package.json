@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/proj4leaflet": "^1.0.10"
+  }
+}

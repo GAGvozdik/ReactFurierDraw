@@ -25,7 +25,7 @@ export default function MainMap() {
     return (
       <div style={{ width: '100vw', height: '100vh' }}>
   
-  <MapContainer zoom={2.6} center={[70, 70]} style={{ height: '100%' }} zoomControl={false}>
+  <MapContainer zoom={2.6} center={[70, 50]} style={{ height: '100%' }} zoomControl={false}>
   
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
   
@@ -36,12 +36,12 @@ export default function MainMap() {
             style={{ color: 'red', weight: 2, fillOpacity: 0.5 }} 
             />
   
-          <ImageOverlay
+          {/* <ImageOverlay
               url={'../../src/data/output.tiff'}
               bounds={bounds}
               opacity={0.5}
               zIndex={10}
-            />
+            /> */}
 
 
         </MapContainer>
