@@ -3,7 +3,7 @@
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import Header from '../../src/components/header'
-import MainMap from '../../src/components/map'
+// import MainMap from '../../src/components/map'
 
 // Расширяем тип Components для добавления MainMap
 declare module '@mui/material/styles' {
