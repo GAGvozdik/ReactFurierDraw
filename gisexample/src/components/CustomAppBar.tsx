@@ -31,7 +31,7 @@ import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
  
 
-const drawerWidth = 350;
+const drawerWidth: number = 350;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -151,7 +151,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
                         </IconButton>
 
                         <Typography variant="h6" noWrap component="div">
-                            WGS84 to Lambert conic
+                            Name of App
                         </Typography>
 
                     </Toolbar>
@@ -176,6 +176,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
 
                 <Box component="main" >
                     <>
+                        <DrawerHeader></DrawerHeader>
                         {children}
                     </>
                 </Box>
