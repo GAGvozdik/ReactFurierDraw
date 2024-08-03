@@ -1,0 +1,168 @@
+```typescript
+import React, { useRef, useEffect, useState } from 'react';
+import * as d3 from 'd3';
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+const Graph: React.FC = () => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [points, setPoints] = useState<Point[]>([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [currentPoint, setCurrentPoint] = useState<Point | null>(null);
+
+  useEffect(() => {
+    const svg = d3.select(svgRef.current);
+    const width = 500;
+    const height = 500;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const canvasWidth = width - margin.left - margin.right;
+    const canvasHeight = height - margin.top - margin.bottom;
+
+    // Ось координат
+    const xScale = d3.scaleLinear().domain([-1, 1]).range([0, canvasWidth]);
+    const yScale = d3.scaleLinear().domain([-1, 1]).range([canvasHeight, 0]);
+    const xAxis = svg
+      .append('g')
+      .attr('transform', `translate(${margin.left},${height - margin.bottom})`)
+      .call(d3.axisBottom(xScale));
+    const yAxis = svg
+      .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`)
+      .call(d3.axisLeft(yScale));
+
+    // События мыши
+    svg
+      .on('click', (event) => {
+        const [x, y] = d3.pointer(event);
+        const normalizedX = (x - margin.left - canvasWidth / 2) / (canvasWidth / 2);
+        const normalizedY = (y - margin.top - canvasHeight / 2) / -(canvasHeight / 2);
+        setPoints([...points, { x: normalizedX, y: normalizedY }]);
+      })
+      .on('contextmenu', (event) => {
+        event.preventDefault();
+        if (points.length > 0) {
+          setPoints(points.slice(0, -1));
+        }
+      });
+
+    // Рисование линии
+    svg
+      .append('path')
+      .attr('id', 'line')
+      .attr('stroke', 'black')
+      .attr('stroke-width', 2)
+      .attr('fill', 'none');
+
+    // Анимация стрелочки
+    const arrow = svg
+      .append('g')
+      .attr('id', 'arrow');
+
+    // Начальная точка стрелочки
+    arrow
+      .append('circle')
+      .attr('cx', xScale(0))
+      .attr('cy', yScale(0))
+      .attr('r', 3)
+      .attr('fill', 'black');
+
+    // Конечная точка стрелочки
+    arrow
+      .append('circle')
+      .attr('id', 'arrow-tip')
+      .attr('cx', xScale(1))
+      .attr('cy', yScale(0))
+      .attr('r', 3)
+      .attr('fill', 'black');
+
+    // Анимация
+    const animation = d3.timer(() => {
+      const angle = animation.elapsed() / 1000;
+      const x = Math.cos(angle);
+      const y = Math.sin(angle);
+      const arrowTip = svg.select('#arrow-tip');
+      arrowTip
+        .attr('cx', xScale(x))
+        .attr('cy', yScale(y));
+
+      // Рисуем линию
+      const linePath = d3.line()
+        .x((d: Point) => xScale(d.x))
+        .y((d: Point) => yScale(d.y));
+
+      const line = svg.select('#line');
+      line.attr('d', linePath(points));
+    });
+
+    return () => animation.stop();
+  }, []);
+
+  return (
+    <svg ref={svgRef} width={500} height={500}>
+      {/* Содержимое SVG */}
+    </svg>
+  );
+};
+
+export default Graph;
+```
+
+**Объяснение:**
+
+1. **Импорты:** 
+   - `React, { useRef, useEffect, useState }`: Компоненты React для работы с ссылками, эффектами и состоянием.
+   - `* as d3`: Импорт всей библиотеки D3.js.
+
+2. **Интерфейс Point:**
+   - Определяет структуру данных для точек на графике.
+
+3. **Компонент Graph:**
+   - `svgRef`: Ссылка на SVG-элемент.
+   - `points`: Массив точек на графике.
+   - `isDrawing`: Флаг, указывающий, идет ли процесс рисования линии.
+   - `currentPoint`: Текущая точка, которая используется при рисовании линии.
+
+4. **useEffect:**
+   - Выполняется после рендеринга компонента.
+   - Настраивает SVG-элемент, включая:
+      - Размеры и отступы.
+      - Оси координат.
+      - События для установки точек и удаления последней точки.
+      - Линию и стрелочку.
+      - Анимацию стрелочки.
+
+5. **События мыши:**
+   - `click`: Добавляет новую точку при нажатии левой кнопки мыши.
+   - `contextmenu`: Удаляет последнюю точку при нажатии правой кнопки мыши.
+
+6. **Рисование линии:**
+   - Использует D3.js `line()` для генерации пути линии.
+   - Отображает линию на основе `points`.
+
+7. **Анимация стрелочки:**
+   - Использует D3.js `timer()` для создания анимации.
+   - Перемещает конечную точку стрелочки по кругу.
+
+8. **Возврат:**
+   - Возвращает SVG-элемент с заданными размерами.
+
+**Использование:**
+
+```typescript
+import Graph from './Graph';
+
+function App() {
+  return (
+    <div>
+      <Graph />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Этот код создает компонент Graph, который отображает SVG-полотно с возможностью установки точек, рисования линии и анимации стрелочки.
