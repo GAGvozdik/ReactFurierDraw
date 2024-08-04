@@ -4,10 +4,16 @@ interface AppBarProps {
   children: React.ReactNode;
 }
 
+
+let canvasWidth : number = 1200;
+let canvasHeight : number = 700;
+
 const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [viewboxPosition, setViewboxPosition] = useState({ x: 0, y: 0 });
-  const [viewboxScale, setViewboxScale] = useState(1.0);
+  const [viewboxPosition, setViewboxPosition] = useState({ x: -800, y: -800 });
+  const [viewboxScale, setViewboxScale] = useState(1.6);
+
+
 
   useEffect(() => {
     const svgElement = svgRef.current;
@@ -43,14 +49,14 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
     };
   }, [viewboxPosition, viewboxScale]);
 
-  const viewBox = `${viewboxPosition.x} ${viewboxPosition.y} ${480 * viewboxScale} ${480 * viewboxScale}`;
+  const viewBox = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
 
   return (
     <div style={{ margin: `20px` }}>
       <svg 
         ref={svgRef} 
         viewBox={viewBox} 
-        style={{ width: '480px', height: '480px', border: '1px solid black', cursor: 'pointer' }}
+        style={{ width: `${canvasWidth}px`, height: `${canvasHeight}px`, border: '1px solid black', cursor: 'pointer' }}
       >
         <rect width="100" height="100" fill="lightgray" />
         {children}

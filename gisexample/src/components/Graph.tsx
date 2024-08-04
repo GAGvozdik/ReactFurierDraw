@@ -3,49 +3,64 @@ import * as d3 from 'd3';
 import Arrow from './Arrow';
 import data from '../data/data.json'; // Импортируйте ваш JSON файл
 
-const Graph: React.FC = () => {
+interface GraphProps {
+    arrowEndWidth?: number;  // Ширина наконечника стрелки
+    lineWidth?: number;       // Ширина линии стрелки
+    updateSpeed?: number;     // Скорость обновления (в миллисекундах)
+}
 
+const Graph: React.FC<GraphProps> = ({
+    arrowEndWidth = 10, // Значение по умолчанию
+    lineWidth = 3,      // Значение по умолчанию
+    updateSpeed = 1000  // Значение по умолчанию 1000 мс
+}) => {
     const svgRef = useRef<SVGSVGElement>(null);
-
+    const [currentDataIndex, setCurrentDataIndex] = useState(0);
     const [currentData, setCurrentData] = useState(data[0]); // Начальное состояние - данные из нулевого момента времени
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
-        // Если необходимо, можно добавить обновление данных здесь
+        const totalFrames = data.length;
+
+        const interval = setInterval(() => {
+            setCurrentDataIndex(prevIndex => {
+                const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
+                setCurrentData(data[newIndex]); // Обновляем currentData
+                return newIndex;
+            });
+        }, updateSpeed); // Используем переданную скорость обновления
 
         return () => {
-            // Остановите анимацию или другие эффекты, если они используются
+            clearInterval(interval); // Убираем интервал при размонтировании компонента
         };
-    }, [currentData]);
+    }, [updateSpeed, data]);
 
     return (
         <>
-          
-                {/* Отрисовка стрелок из currentData */}
-                {currentData.map((arrow, index) => {
-                    let x0 = 0;
-                    let y0 = 0;
-                    let x1 = arrow[0];
-                    let y1 = arrow[1];
+            {/* Отрисовка стрелок из currentData, исключая последние две стрелки */}
+            {currentData.slice(0, -2).map((arrow, index) => {
+                let x0 = 0;
+                let y0 = 0;
+                let x1 = arrow[0];
+                let y1 = arrow[1];
 
-                    if (index > 0) {
-                        x0 = currentData[index - 1][0];
-                        y0 = currentData[index - 1][1];
-                    }
+                if (index > 0) {
+                    x0 = currentData[index - 1][0];
+                    y0 = currentData[index - 1][1];
+                }
 
-                    return (
-                        <Arrow
-                            key={index}
-                            lineWidth={5}
-                            endWidth={20}
-                            x0={x0}
-                            y0={y0}
-                            x1={x1}
-                            y1={y1}
-                        />
-                    );
-                })}
-
+                return (
+                    <Arrow
+                        key={index}
+                        lineWidth={lineWidth}   // Используем переданную ширину линии
+                        endWidth={arrowEndWidth} // Используем переданную ширину наконечника
+                        x0={x0}
+                        y0={y0}
+                        x1={x1}
+                        y1={y1}
+                    />
+                );
+            })}
         </>
     );
 };

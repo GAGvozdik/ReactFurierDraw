@@ -25,17 +25,17 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
-import HidingMenu from '../components/HidingMenu';
+
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
- 
 
 const drawerWidth: number = 350;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
   children: React.ReactNode;
+  hideMenuChildren?: React.ReactNode;
 }
 
 
@@ -114,8 +114,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 
-const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
-    
+const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => {
 
     const [isTree, setIsTree] = useState(true); 
 
@@ -130,6 +129,8 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
         setOpen(true);
         
     };
+
+
     
     return (
         <div>
@@ -170,7 +171,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
 
                     <Divider />
 
-                    <HidingMenu />
+                    {hideMenuChildren && <>{hideMenuChildren}</>}
 
                 </Drawer>
 
