@@ -7,6 +7,7 @@ import theme from '../src/components/theme';
 
 import Graph from './components/Graph';
 import CustomAppBar from './components/CustomAppBar';
+import SvgCanvas from './components/SvgCanvas';
 
 function App() {
 
@@ -17,8 +18,10 @@ function App() {
     <div className="App" >
       <ThemeProvider theme={theme}>
         <CustomAppBar>
+          <SvgCanvas>
+            <Graph></Graph>
+          </SvgCanvas>
           
-          <Graph></Graph>
 
         </CustomAppBar>
       </ThemeProvider>

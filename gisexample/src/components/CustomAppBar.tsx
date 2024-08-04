@@ -151,7 +151,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children }) => {
                         </IconButton>
 
                         <Typography variant="h6" noWrap component="div">
-                            Name of App
+                            Name of
                         </Typography>
 
                     </Toolbar>

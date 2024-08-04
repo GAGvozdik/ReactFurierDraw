@@ -3,47 +3,57 @@ import React from 'react';
 interface ArrowProps {
   x0: number;
   y0: number;
-  angle: number;
-  length: number;
-  arrowHeadLength?: number; // Длина наконечника стрелки
+  x1: number; // Координата X конца стрелки
+  y1: number; // Координата Y конца стрелки
+
+  endWidth: number;
+  lineWidth: number;
 }
+
 
 const Arrow: React.FC<ArrowProps> = ({
   x0,
   y0,
-  angle,
-  length,
-  arrowHeadLength = 10, // Значение по умолчанию для длины наконечника
+  x1,
+  y1,
+  endWidth, 
+  lineWidth,
 }) => {
-  const radianAngle = (angle * Math.PI) / 180;
 
-  // Конечные координаты основной линии стрелки (короткой на длину наконечника)
-  const adjustedLength = length - arrowHeadLength + 2; // Уменьшаем длину на длину наконечника
-  const x1 = x0 + adjustedLength * Math.cos(radianAngle);
-  const y1 = y0 + adjustedLength * Math.sin(radianAngle);
 
-  // Конечные координаты наконечника
-  const xf1 = x0 + length * Math.cos(radianAngle);
-  const yf1 = y0 + length * Math.sin(radianAngle);
+    // Вычисляем угол стрелки
+    const angle = Math.atan2(y1 - y0, x1 - x0) * (180 / Math.PI);
 
-  // Координаты для наконечника стрелки
-  const arrowHeadAngle = Math.PI / 6; // Угол наконечника (30 градусов)
+    // Вычисляем координаты левого и правого углов наконечника
+    const baseAngle = angle * Math.PI / 180; // Угол стрелки в радианах
+    const halfAngle = 30 * Math.PI / 180; // Половина угла наконечника
 
-  const x2 = xf1 - arrowHeadLength * Math.cos(radianAngle - arrowHeadAngle);
-  const y2 = yf1 - arrowHeadLength * Math.sin(radianAngle - arrowHeadAngle);
-  
-  const x3 = xf1 - arrowHeadLength * Math.cos(radianAngle + arrowHeadAngle);
-  const y3 = yf1 - arrowHeadLength * Math.sin(radianAngle + arrowHeadAngle);
+    let arrowLenght: number = Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5);
 
-  return (
-    <g>
-      {/* Основная линия стрелки */}
-      <line x1={x0} y1={y0} x2={x1} y2={y1} stroke="black" strokeWidth={2} />
-      {/* Наконечник стрелки */}
-      <polygon points={`${xf1},${yf1} ${x2},${y2} ${x3},${y3}`} fill="black" />
+    let lineEndX: number = x0 + (x1 - x0) * (arrowLenght - endWidth * Math.cos(halfAngle)) / arrowLenght;
+    let lineEndY: number = y0 + (y1 - y0) * (arrowLenght - endWidth * Math.cos(halfAngle)) / arrowLenght;
 
-    </g>
-  );
+
+
+    const leftCornerX = x1 - endWidth * Math.cos(baseAngle + halfAngle);
+    const leftCornerY = y1 - endWidth * Math.sin(baseAngle + halfAngle);
+
+    const rightCornerX = x1 - endWidth * Math.cos(baseAngle - halfAngle)
+    const rightCornerY = y1 - endWidth * Math.sin(baseAngle - halfAngle);
+
+    return (
+        <g>
+
+            {/* Наконечник стрелки */}
+            <polygon points={`${x1},${y1} ${leftCornerX},${leftCornerY} ${rightCornerX},${rightCornerY}`} fill="black" />
+
+
+            {/* Основная линия стрелки */}
+            <line x1={x0} y1={y0} x2={lineEndX} y2={lineEndY} stroke="black" strokeWidth={lineWidth} />
+            
+
+        </g>
+    );
 };
 
 export default Arrow;
