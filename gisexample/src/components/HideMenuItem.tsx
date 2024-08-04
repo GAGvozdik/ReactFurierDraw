@@ -4,6 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React, { useRef, useEffect, useState } from 'react';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
+import Divider from '@mui/material/Divider';
 
 interface HideMenuItemProps {
     children: React.ReactNode;
@@ -42,16 +43,22 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                     <CircleOutlinedIcon />
                 </ListItemIcon>
 
-
+                <div>
+                <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
                 {
                     open ? children : <></>
                 }
                 
-                <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
+                
+                </div>
+                
+
             
             </ListItemButton>
+            
             </ListItem>
-        
+            
+            <Divider />
         </div>
     )
 }

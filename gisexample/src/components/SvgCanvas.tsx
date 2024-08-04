@@ -2,25 +2,36 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface AppBarProps {
   children: React.ReactNode;
+  viewBox: string; // Допустим, что viewBox передается в формате "minX minY width height"
 }
 
+let canvasWidth: number = 1200;
+let canvasHeight: number = 700;
 
-let canvasWidth : number = 1200;
-let canvasHeight : number = 700;
-
-const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
+const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [viewboxPosition, setViewboxPosition] = useState({ x: -800, y: -800 });
-  const [viewboxScale, setViewboxScale] = useState(1.6);
+  const [viewboxPosition, setViewboxPosition] = useState({ x: 0, y: 0 });
+  const [viewboxScale, setViewboxScale] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-
+  useEffect(() => {
+    // Извлечение значений из переданного viewBox
+    const [minX, minY, width, height] = viewBox.split(' ').map(Number);
+    console.log([minX, minY, width, height]);
+    console.log(viewBox);
+    // Устанавливаем позицию и масштаб
+    setViewboxPosition({ x: minX - width / 2, y: minY });
+    setViewboxScale(Math.max(width / canvasWidth, height / canvasHeight));
+  }, [viewBox]);
 
   useEffect(() => {
     const svgElement = svgRef.current;
     if (!svgElement) return;
 
     const handleWheel = (e: WheelEvent) => {
-      const scale = (e.deltaY < 0) ? 0.8 : 1.2;
+      e.preventDefault();
+      const scale = (e.deltaY < 0) ? 0.95 : 1.1;
       const newScale = viewboxScale * scale;
 
       if (newScale < 8.0 && newScale > 1 / 256) {
@@ -42,23 +53,58 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
       }
     };
 
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button === 1) {
+        setIsDragging(true);
+        setDragStart({ x: e.clientX, y: e.clientY });
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        const dx = (e.clientX - dragStart.x) / viewboxScale;
+        const dy = (e.clientY - dragStart.y) / viewboxScale;
+
+        setViewboxPosition((prev) => ({
+          x: prev.x - dx,
+          y: prev.y - dy,
+        }));
+
+        setDragStart({ x: e.clientX, y: e.clientY });
+      }
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      if (e.button === 1) {
+        setIsDragging(false);
+      }
+    };
+
     window.addEventListener('wheel', handleWheel);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [viewboxPosition, viewboxScale]);
+  }, [viewboxPosition, viewboxScale, isDragging, dragStart]);
 
-  const viewBox = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
+
+
+  let calculatedViewBox: string = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
+
 
   return (
     <div style={{ margin: `20px` }}>
       <svg 
         ref={svgRef} 
-        viewBox={viewBox} 
+        viewBox={calculatedViewBox} 
         style={{ width: `${canvasWidth}px`, height: `${canvasHeight}px`, border: '1px solid black', cursor: 'pointer' }}
       >
-        <rect width="100" height="100" fill="lightgray" />
         {children}
       </svg>
     </div>

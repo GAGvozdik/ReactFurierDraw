@@ -14,7 +14,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ onChange }) => {
   };
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: 240 }}>
       <Slider
         size="small"
         defaultValue={1}
