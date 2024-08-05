@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import Arrow from './Arrow';
-import data from '../data/data.json'; // Импортируйте ваш JSON файл
 
 interface GraphProps {
     arrowEndWidth?: number; // Ширина наконечника стрелки
@@ -9,6 +8,8 @@ interface GraphProps {
     updateSpeed?: number;     // Скорость обновления (в миллисекундах)
     arrowNumb?: number;
     isPlaying?: boolean; // Флаг, определяющий, запущена ли анимация
+    animLen?: number;
+    data?: number[][][];
 }
 
 const Graph: React.FC<GraphProps> = ({
@@ -16,11 +17,16 @@ const Graph: React.FC<GraphProps> = ({
     lineWidth = 4,      // Значение по умолчанию
     updateSpeed = 1000, // Значение по умолчанию 1000 мс
     arrowNumb = 1,
-    isPlaying = false
+    isPlaying = false,
+    animLen = 8,
+    data = []
 }) => {
 
     if (arrowNumb >= data[0].length - 1){
         arrowNumb = data[0].length - 2;
+    }
+    if (animLen >= data.length){
+        animLen = data.length;
     }
 
     let contourPoints: string = '';
@@ -45,7 +51,7 @@ const Graph: React.FC<GraphProps> = ({
         // Функция для запуска анимации
         const startAnimation = () => {
             const svg = d3.select(svgRef.current);
-            const totalFrames = data.length;
+            const totalFrames = animLen;
 
             const interval = setInterval(() => {
                 setCurrentDataIndex(prevIndex => {

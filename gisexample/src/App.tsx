@@ -10,7 +10,7 @@ import CustomAppBar from './components/CustomAppBar';
 import SvgCanvas from './components/SvgCanvas';
 import HidingMenu from './components/HidingMenu';
 import HideMenuItem from './components/HideMenuItem';
-import data from './data/data.json'; // Импортируйте ваш JSON файл
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
@@ -21,6 +21,9 @@ import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+
+import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
+import data from './data/data.json'; // Импортируйте ваш JSON файл
 
 
 function App() {
@@ -54,14 +57,24 @@ function App() {
     };
     
 
+    const [animLen, setAnimLen] = useState(8); // Состояние для значения слайдера
+
+    const updatAnimLen = (value: number) => {
+      setAnimLen(value); // Обновляем состояние при изменении значения слайдера
+    };
+    
+    const [isActive, setIsActive] = useState(true);
+
     const [isPlaying, setIsPlaying] = useState(false);
 
     const handlePlay = () => {
       setIsPlaying(true);
+      setIsActive(false); // Обновляем состояние при изменении значения слайдера
     };
   
     const handlePause = () => {
       setIsPlaying(false);
+      setIsActive(true); // Обновляем состояние при изменении значения слайдера
     };
   
 
@@ -70,8 +83,8 @@ function App() {
     let points = [];
     let startArrowNumb = arrowNumb;
 
-    if (arrowNumb > data[0].length - 1) {
-        startArrowNumb = data[0].length - 1;
+    if (arrowNumb > dataProps[0] - 1) {
+        startArrowNumb = dataProps[0] - 1;
     }
 
     points = data.map(innerArray => innerArray[startArrowNumb]);
@@ -91,8 +104,8 @@ function App() {
     const viewHeight = maxY - minY + 2 * padding;
     const viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
     
-  
 
+    //TODO что за open={true} ??!
     return (
         <div className="App" >
             <ThemeProvider theme={theme}>
@@ -106,7 +119,7 @@ function App() {
                                     menuItemText = {'Rotating speed'} 
                                     menuIcon={<><SpeedIcon /></>}
                                 >  
-                                    <CustomSlider onChange={updateSpeed} />       
+                                    <CustomSlider onChange={updateSpeed} max={60} min={0}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -114,7 +127,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
-                                    <CustomSlider onChange={updateLineWidth} />       
+                                    <CustomSlider onChange={updateLineWidth} max={10} min={0}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -122,7 +135,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><ChangeHistoryIcon /></>}
                                 >       
-                                    <CustomSlider onChange={updatArrowEndWidth} />       
+                                    <CustomSlider onChange={updatArrowEndWidth} max={30} min={0}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -130,7 +143,15 @@ function App() {
                                     open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatArrowNumb} />       
+                                    <CustomSlider onChange={updatArrowNumb} max={200} min={0}/>       
+                                </HideMenuItem>
+                                
+                                <HideMenuItem 
+                                    menuItemText = {'Animation len'}
+                                    open={true} 
+                                    menuIcon={<><AccessTimeIcon /></>}
+                                >          
+                                    <CustomSlider onChange={updatAnimLen} max={1000} min={0} isActive={isActive}/>       
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
@@ -159,6 +180,8 @@ function App() {
 
                     <SvgCanvas viewBox={viewBox}>
                         <Graph 
+                            data={data}
+                            animLen={animLen}
                             isPlaying={isPlaying}
                             arrowEndWidth={arrowEndWidthValue} // Установите ширину наконечника на 15
                             lineWidth={lineWidthValue}      // Установите ширину линии на 5
