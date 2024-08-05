@@ -3,16 +3,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React, { useRef, useEffect, useState } from 'react';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
+
 import Divider from '@mui/material/Divider';
 
 interface HideMenuItemProps {
     children: React.ReactNode;
     open: boolean;
     menuItemText: string;
+    menuIcon?: React.ReactNode;
 }
 
-const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemText }) => {
+const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemText, menuIcon }) => {
 
     const [pr, setPr] = useState('WGS84'); // Изначальное значение pr
 
@@ -40,19 +41,19 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                         justifyContent: 'center',
                     }}
                 >
-                    <CircleOutlinedIcon />
+                    {
+                        open ? <>{menuIcon && menuIcon}</>  : <></>
+                    }
                 </ListItemIcon>
 
                 <div>
-                <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
-                {
-                    open ? children : <></>
-                }
-                
-                
-                </div>
-                
 
+                    <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
+                    {
+                        open ? children : <></>
+                    }
+                    
+                </div>
             
             </ListItemButton>
             

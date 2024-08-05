@@ -152,7 +152,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                         </IconButton>
 
                         <Typography variant="h6" noWrap component="div">
-                            Name of
+                            Furier Draw
                         </Typography>
 
                     </Toolbar>

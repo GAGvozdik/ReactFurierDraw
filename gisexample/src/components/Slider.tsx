@@ -21,7 +21,10 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ onChange }) => {
         aria-label="Small"
         valueLabelDisplay="auto"
         onChange={handleChange} // Установка обработчика изменения
+        min={0}
+        max={50}
       />
+      
     </Box>
   );
 }

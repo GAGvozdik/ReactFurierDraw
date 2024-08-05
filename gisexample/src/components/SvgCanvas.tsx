@@ -15,11 +15,16 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
+  // Храним начальное значение viewBox
+  const [initialViewBox, setInitialViewBox] = useState<string | null>(null);
+
   useEffect(() => {
     // Извлечение значений из переданного viewBox
     const [minX, minY, width, height] = viewBox.split(' ').map(Number);
-    console.log([minX, minY, width, height]);
-    console.log(viewBox);
+    
+    // Устанавливаем начальное значение viewBox
+    setInitialViewBox(viewBox);
+    
     // Устанавливаем позицию и масштаб
     setViewboxPosition({ x: minX - width / 2, y: minY });
     setViewboxScale(Math.max(width / canvasWidth, height / canvasHeight));
@@ -31,7 +36,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const scale = (e.deltaY < 0) ? 0.95 : 1.1;
+      const scale = (e.deltaY < 0) ? 0.9 : 1.1;
       const newScale = viewboxScale * scale;
 
       if (newScale < 8.0 && newScale > 1 / 256) {
@@ -93,22 +98,33 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     };
   }, [viewboxPosition, viewboxScale, isDragging, dragStart]);
 
-
-
   let calculatedViewBox: string = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
 
+  const handleReturnZoom = () => {
+    if (initialViewBox) {
+      const [minX, minY, width, height] = initialViewBox.split(' ').map(Number);
+      setViewboxPosition({ x: minX - width / 2, y: minY });
+      setViewboxScale(Math.max(width / canvasWidth, height / canvasHeight));
+    }
+  };
 
   return (
-    <div style={{ margin: `20px` }}>
-      <svg 
-        ref={svgRef} 
-        viewBox={calculatedViewBox} 
-        style={{ width: `${canvasWidth}px`, height: `${canvasHeight}px`, border: '1px solid black', cursor: 'pointer' }}
-      >
-        {children}
-      </svg>
-    </div>
+    <svg 
+      ref={svgRef} 
+      viewBox={calculatedViewBox} 
+      style={{ 
+        width: `${canvasWidth}px`, 
+        height: `${canvasHeight}px`, 
+        border: '4px solid #B3B3B3', 
+        borderRadius: '35px', 
+        cursor: 'pointer',
+        margin: '20px'
+      }}
+    >
+      {children}
+    </svg>
   );
 };
+
 
 export default SvgCanvas;

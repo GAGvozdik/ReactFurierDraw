@@ -3,20 +3,20 @@ import * as d3 from 'd3';
 import Arrow from './Arrow';
 import data from '../data/data.json'; // Импортируйте ваш JSON файл
 
-
-
 interface GraphProps {
-    arrowEndWidth?: number;  // Ширина наконечника стрелки
+    arrowEndWidth?: number; // Ширина наконечника стрелки
     lineWidth?: number;       // Ширина линии стрелки
     updateSpeed?: number;     // Скорость обновления (в миллисекундах)
     arrowNumb?: number;
+    isPlaying?: boolean; // Флаг, определяющий, запущена ли анимация
 }
 
 const Graph: React.FC<GraphProps> = ({
     arrowEndWidth = 10, // Значение по умолчанию
     lineWidth = 4,      // Значение по умолчанию
-    updateSpeed = 1,  // Значение по умолчанию 1000 мс
-    arrowNumb = 1
+    updateSpeed = 1000, // Значение по умолчанию 1000 мс
+    arrowNumb = 1,
+    isPlaying = false
 }) => {
 
     if (arrowNumb >= data[0].length - 1){
@@ -39,23 +39,47 @@ const Graph: React.FC<GraphProps> = ({
     const svgRef = useRef<SVGSVGElement>(null);
     const [currentDataIndex, setCurrentDataIndex] = useState(0);
     const [currentData, setCurrentData] = useState(data[0]); // Начальное состояние - данные из нулевого момента времени
+    const [animationInterval, setAnimationInterval] = useState<NodeJS.Timer | null>(null); // Храним интервал анимации
 
     useEffect(() => {
-        const svg = d3.select(svgRef.current);
-        const totalFrames = data.length;
+        // Функция для запуска анимации
+        const startAnimation = () => {
+            const svg = d3.select(svgRef.current);
+            const totalFrames = data.length;
 
-        const interval = setInterval(() => {
-            setCurrentDataIndex(prevIndex => {
-                const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
-                setCurrentData(data[newIndex]); // Обновляем currentData
-                return newIndex;
-            });
-        }, updateSpeed); // Используем переданную скорость обновления
+            const interval = setInterval(() => {
+                setCurrentDataIndex(prevIndex => {
+                    const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
+                    setCurrentData(data[newIndex]); // Обновляем currentData
+                    return newIndex;
+                });
+            }, updateSpeed); // Используем переданную скорость обновления
 
-        return () => {
-            clearInterval(interval); // Убираем интервал при размонтировании компонента
+            setAnimationInterval(interval);
         };
-    }, [updateSpeed, data]);
+
+        // Функция для остановки анимации
+        const stopAnimation = () => {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                setAnimationInterval(null);
+            }
+        };
+
+        // Запускаем анимацию, если isPlaying true
+        if (isPlaying) {
+            startAnimation();
+        } else {
+            stopAnimation(); // Останавливаем анимацию, если isPlaying false
+        }
+
+        // Очищаем интервал при размонтировании компонента
+        return () => {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+            }
+        };
+    }, [isPlaying, updateSpeed, data]);
 
     return (
         <>
