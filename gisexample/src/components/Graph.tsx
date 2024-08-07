@@ -113,7 +113,7 @@ const Graph: React.FC<GraphProps> = ({
                             stroke="yellow"
                             strokeWidth={contourLineWidth}
                         />
-
+{/* 
                         <Arrow
                             key={index}
                             lineWidth={lineWidth}   // Используем переданную ширину линии
@@ -122,7 +122,7 @@ const Graph: React.FC<GraphProps> = ({
                             y0={y0}
                             x1={x1}
                             y1={y1}
-                        />
+                        /> */}
                     </>
 
                 );

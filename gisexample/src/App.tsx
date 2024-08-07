@@ -137,7 +137,7 @@ function App() {
                                     menuItemText = {'Rotating speed'} 
                                     menuIcon={<><SpeedIcon /></>}
                                 >  
-                                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={25} step={0.1}/>       
+                                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={70} step={0.1}/>       
                                 </HideMenuItem>
 
 
@@ -171,7 +171,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatArrowNumb} max={200} min={1} defaultValue={8}/>       
+                                    <CustomSlider onChange={updatArrowNumb} max={600} min={1} defaultValue={8}/>       
                                     <></>
                                 </HideMenuItem>
                                 
