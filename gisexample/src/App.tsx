@@ -21,12 +21,22 @@ import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import pako from 'pako'; // Импорт pako
 
 import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
 import data from './data/data.json'; // Импортируйте ваш JSON файл
+// import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
+import CssBaseline from '@mui/material/CssBaseline';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 function App() {
+ 
+  
 
     const [isTree, setIsTree] = useState(true); 
     const theme = useTheme();
@@ -37,27 +47,33 @@ function App() {
         setSpeedValue(value); // Обновляем состояние при изменении значения слайдера
     };
 
-    const [lineWidthValue, setLineWidth] = useState(3); // Состояние для значения слайдера
+    const [lineWidthValue, setLineWidth] = useState(0.7); // Состояние для значения слайдера
 
     const updateLineWidth = (value: number) => {
         setLineWidth(value); // Обновляем состояние при изменении значения слайдера
     };
 
+    const [contourLineWidth, setContourLineWidth] = useState(0.025); // Состояние для значения слайдера
 
-    const [arrowEndWidthValue, setArrowEndWidth] = useState(10); // Состояние для значения слайдера
+    const updateContourLineWidth = (value: number) => {
+        setContourLineWidth(value); // Обновляем состояние при изменении значения слайдера
+    };
+
+
+    const [arrowEndWidthValue, setArrowEndWidth] = useState(6); // Состояние для значения слайдера
 
     const updatArrowEndWidth = (value: number) => {
       setArrowEndWidth(value); // Обновляем состояние при изменении значения слайдера
     };
 
-    const [arrowNumb, setArrowNumb] = useState(8); // Состояние для значения слайдера
+    const [arrowNumb, setArrowNumb] = useState(25); // Состояние для значения слайдера
 
     const updatArrowNumb = (value: number) => {
       setArrowNumb(value); // Обновляем состояние при изменении значения слайдера
     };
     
 
-    const [animLen, setAnimLen] = useState(8); // Состояние для значения слайдера
+    const [animLen, setAnimLen] = useState(2000); // Состояние для значения слайдера
 
     const updatAnimLen = (value: number) => {
       setAnimLen(value); // Обновляем состояние при изменении значения слайдера
@@ -83,8 +99,8 @@ function App() {
     let points = [];
     let startArrowNumb = arrowNumb;
 
-    if (arrowNumb > dataProps[0] - 1) {
-        startArrowNumb = dataProps[0] - 1;
+    if (arrowNumb > Number(dataProps[0]) - 1) {
+        startArrowNumb = Number(dataProps[0]) - 1;
     }
 
     points = data.map(innerArray => innerArray[startArrowNumb]);
@@ -108,9 +124,11 @@ function App() {
     //TODO что за open={true} ??!
     return (
         <div className="App" >
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={darkTheme}>
                 <CustomAppBar
 
+
+                    
                     hideMenuChildren={
                         <HidingMenu open={true}>
                             <> 
@@ -119,7 +137,16 @@ function App() {
                                     menuItemText = {'Rotating speed'} 
                                     menuIcon={<><SpeedIcon /></>}
                                 >  
-                                    <CustomSlider onChange={updateSpeed} max={60} min={0}/>       
+                                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={25} step={0.1}/>       
+                                </HideMenuItem>
+
+
+                                <HideMenuItem 
+                                    menuItemText = {'Line width'}
+                                    open={true} 
+                                    menuIcon={<><WidthNormalIcon /></>}
+                                >         
+                                    <CustomSlider onChange={updateContourLineWidth} max={10} min={0} defaultValue={0.008} step={0.001}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -127,7 +154,8 @@ function App() {
                                     open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
-                                    <CustomSlider onChange={updateLineWidth} max={10} min={0}/>       
+                                    <CustomSlider onChange={updateLineWidth} max={10} min={0} defaultValue={0.25} step={0.001}/>       
+     
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -135,7 +163,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><ChangeHistoryIcon /></>}
                                 >       
-                                    <CustomSlider onChange={updatArrowEndWidth} max={30} min={0}/>       
+                                    <CustomSlider onChange={updatArrowEndWidth} max={30} min={0} defaultValue={8} step={0.001}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -143,7 +171,8 @@ function App() {
                                     open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatArrowNumb} max={200} min={0}/>       
+                                    <CustomSlider onChange={updatArrowNumb} max={200} min={1} defaultValue={8}/>       
+                                    <></>
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
@@ -151,7 +180,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><AccessTimeIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatAnimLen} max={1000} min={0} isActive={isActive}/>       
+                                    <CustomSlider onChange={updatAnimLen} max={1500} min={0} isActive={isActive} defaultValue={1500}/>       
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
@@ -187,6 +216,7 @@ function App() {
                             lineWidth={lineWidthValue}      // Установите ширину линии на 5
                             updateSpeed={speedValue}  // Установите скорость обновления на 500 мс
                             arrowNumb={arrowNumb}
+                            contourLineWidth={contourLineWidth}
                             
                         />
                     </SvgCanvas>

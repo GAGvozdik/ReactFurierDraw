@@ -10,6 +10,7 @@ interface GraphProps {
     isPlaying?: boolean; // Флаг, определяющий, запущена ли анимация
     animLen?: number;
     data?: number[][][];
+    contourLineWidth?: number;
 }
 
 const Graph: React.FC<GraphProps> = ({
@@ -19,7 +20,8 @@ const Graph: React.FC<GraphProps> = ({
     arrowNumb = 1,
     isPlaying = false,
     animLen = 8,
-    data = []
+    data = [],
+    contourLineWidth = 1,
 }) => {
 
     if (arrowNumb >= data[0].length - 1){
@@ -108,8 +110,8 @@ const Graph: React.FC<GraphProps> = ({
                         <polyline
                             points={contourPoints}
                             fill="none"
-                            stroke="grey"
-                            strokeWidth="2"
+                            stroke="yellow"
+                            strokeWidth={contourLineWidth}
                         />
 
                         <Arrow

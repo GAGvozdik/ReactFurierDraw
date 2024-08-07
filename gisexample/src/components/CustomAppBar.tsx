@@ -93,6 +93,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         flexShrink: 0,
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
+
         ...(open && {
             ...openedMixin(theme),
             '& .MuiDrawer-paper': openedMixin(theme),
@@ -101,6 +102,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
             ...closedMixin(theme),
             '& .MuiDrawer-paper': closedMixin(theme),
         }),
+        
     }),
 );
 
@@ -110,6 +112,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
+    
     ...theme.mixins.toolbar,
 }));
 
@@ -135,7 +138,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
     return (
         <div>
             <Box>
-                <AppBar position="fixed" open={open} style={{ backgroundColor: '#318DC2' }}>
+                <AppBar position="fixed" open={open} style={{ backgroundColor: '#121619' }}>
                     <Toolbar>
 
                         <IconButton
@@ -160,10 +163,12 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
 
 
                 <Drawer
+                
                     variant="permanent"
                     open={open}
+                    
                 >
-                    <DrawerHeader >
+                    <DrawerHeader style={{ backgroundColor: '#272b2e' }} >
                         <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                         </IconButton>
@@ -175,7 +180,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
 
                 </Drawer>
 
-                <Box component="main" >
+                <Box component="main" style={{ transition: 'margin-left 0.4s ease', marginLeft: open ? '400px' : '50px'}} >
                     <>
                         <DrawerHeader></DrawerHeader>
                         {children}

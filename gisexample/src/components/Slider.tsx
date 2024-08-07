@@ -7,9 +7,11 @@ interface CustomSliderProps {
   max?: number;
   min?: number;
   isActive?: boolean;
+  defaultValue?: number;
+  step?: number;
 }
 
-const CustomSlider: React.FC<CustomSliderProps> = ({ onChange, max=50, min=0, isActive=true }) => {
+const CustomSlider: React.FC<CustomSliderProps> = ({ onChange, max=50, min=0, isActive=true, defaultValue=0, step=1 }) => {
   const handleChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
       onChange(newValue); // Передаем новое значение родительскому компоненту
@@ -22,12 +24,13 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ onChange, max=50, min=0, is
         <>
           <Slider
             size="small"
-            defaultValue={1}
+            defaultValue={defaultValue}
             aria-label="Small"
             valueLabelDisplay="auto"
             onChange={handleChange} // Установка обработчика изменения
             min={min}
             max={max}
+            step={step} 
           />
       
         </>
@@ -36,7 +39,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ onChange, max=50, min=0, is
           <Slider
             disabled
             size="small"
-            defaultValue={1}
+            defaultValue={defaultValue}
             aria-label="Small"
             valueLabelDisplay="auto"
             onChange={handleChange} // Установка обработчика изменения

@@ -45,11 +45,11 @@ const Arrow: React.FC<ArrowProps> = ({
         <g>
 
             {/* Наконечник стрелки */}
-            <polygon points={`${x1},${y1} ${leftCornerX},${leftCornerY} ${rightCornerX},${rightCornerY}`} fill="black" />
+            <polygon points={`${x1},${y1} ${leftCornerX},${leftCornerY} ${rightCornerX},${rightCornerY}`} fill="white" />
 
 
             {/* Основная линия стрелки */}
-            <line x1={x0} y1={y0} x2={lineEndX} y2={lineEndY} stroke="black" strokeWidth={lineWidth} />
+            <line x1={x0} y1={y0} x2={lineEndX} y2={lineEndY} stroke="white" strokeWidth={lineWidth} />
             
 
         </g>

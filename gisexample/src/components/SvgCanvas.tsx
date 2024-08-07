@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
+import './SvgCanvas.css'; // Импорт файла стилей
+// import styles from "./SvgCanvas.module.scss" 
 
 interface AppBarProps {
   children: React.ReactNode;
   viewBox: string; // Допустим, что viewBox передается в формате "minX minY width height"
 }
 
-let canvasWidth: number = 1200;
+let canvasWidth: number = 1100;
 let canvasHeight: number = 700;
 
 const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
@@ -109,16 +111,19 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   };
 
   return (
-    <svg 
-      ref={svgRef} 
-      viewBox={calculatedViewBox} 
-      style={{ 
-        width: `${canvasWidth}px`, 
-        height: `${canvasHeight}px`, 
-        border: '4px solid #B3B3B3', 
-        borderRadius: '35px', 
+    <svg
+      ref={svgRef}
+      viewBox={calculatedViewBox}
+      className="svg" // Добавляем класс для стилей
+      style={{
+        width: `130vh`,
+        height: `80vh`,
+        border: '4px solid #3b3f40',
+        borderRadius: '10px',
         cursor: 'pointer',
-        margin: '20px'
+        margin: '20px',
+        overflow: 'hidden',
+        backgroundColor: '#101010',
       }}
     >
       {children}
