@@ -149,22 +149,22 @@ function App() {
                                     <CustomSlider onChange={updateContourLineWidth} max={10} min={0} defaultValue={0.008} step={0.001}/>       
                                 </HideMenuItem>
 
-                                <HideMenuItem 
+                                {/* <HideMenuItem 
                                     menuItemText = {'Arrow line width'}
                                     open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
                                     <CustomSlider onChange={updateLineWidth} max={10} min={0} defaultValue={0.25} step={0.001}/>       
      
-                                </HideMenuItem>
+                                </HideMenuItem> */}
 
-                                <HideMenuItem 
+                                {/* <HideMenuItem 
                                     menuItemText = {'Arrow triangle width'}
                                     open={true} 
                                     menuIcon={<><ChangeHistoryIcon /></>}
                                 >       
                                     <CustomSlider onChange={updatArrowEndWidth} max={30} min={0} defaultValue={8} step={0.001}/>       
-                                </HideMenuItem>
+                                </HideMenuItem> */}
 
                                 <HideMenuItem 
                                     menuItemText = {'Arrow number'}
@@ -213,6 +213,7 @@ function App() {
                             animLen={animLen}
                             isPlaying={isPlaying}
                             arrowEndWidth={arrowEndWidthValue} // Установите ширину наконечника на 15
+                            isLogSize={true} 
                             lineWidth={lineWidthValue}      // Установите ширину линии на 5
                             updateSpeed={speedValue}  // Установите скорость обновления на 500 мс
                             arrowNumb={arrowNumb}

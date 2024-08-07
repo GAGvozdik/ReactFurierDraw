@@ -11,6 +11,7 @@ interface GraphProps {
     animLen?: number;
     data?: number[][][];
     contourLineWidth?: number;
+    isLogSize?: boolean;
 }
 
 const Graph: React.FC<GraphProps> = ({
@@ -22,6 +23,7 @@ const Graph: React.FC<GraphProps> = ({
     animLen = 8,
     data = [],
     contourLineWidth = 1,
+    isLogSize = false
 }) => {
 
     if (arrowNumb >= data[0].length - 1){
@@ -110,14 +112,26 @@ const Graph: React.FC<GraphProps> = ({
                         <polyline
                             points={contourPoints}
                             fill="none"
-                            stroke="yellow"
+                            stroke="#b3c213"
                             strokeWidth={contourLineWidth}
                         />
 
                         <Arrow
                             key={index}
-                            lineWidth={lineWidth}   // Используем переданную ширину линии
-                            endWidth={arrowEndWidth} // Используем переданную ширину наконечника
+                            lineWidth={
+                                isLogSize ? 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / 100 
+                                : 
+                                lineWidth
+                                
+                            }   // Используем переданную ширину линии
+
+                            endWidth={
+                                isLogSize ? 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / 10 
+                                : 
+                                arrowEndWidth
+                            } // Используем переданную ширину наконечника
                             x0={x0}
                             y0={y0}
                             x1={x1}
