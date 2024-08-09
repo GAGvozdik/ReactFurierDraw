@@ -208,6 +208,7 @@ function App() {
                 >
 
                     <SvgCanvas viewBox={viewBox}>
+                        {/* <></> */}
                         <Graph 
                             data={data}
                             animLen={animLen}

@@ -111,25 +111,50 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   };
 
   return (
-    <svg
-      ref={svgRef}
-      viewBox={calculatedViewBox}
-      className="svg" // Добавляем класс для стилей
+    <div
       style={{
-        width: `130vh`,
-        height: `80vh`,
-        border: '4px solid #3b3f40',
-        borderRadius: '10px',
-        cursor: 'pointer',
-        margin: '20px',
-        overflow: 'hidden',
-        backgroundColor: '#101010',
+        width: `100%`,
+        height: `100%`,
+        display: 'grid',
+        gridTemplateColumns: '10% 80% 10%', // 3 колонки
+        gridTemplateRows: '10% 80% 10%', // 3 строки
+
+        gap: '0px', // Отступ между элементами
+        margin: '0px',
+        backgroundColor: '#232324',
       }}
     >
-      {children}
-    </svg>
+
+      <div
+        style={{
+          gridColumnStart: 2,
+          gridColumnEnd: 2,
+          gridRowStart: 2,
+          gridRowEnd: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <svg
+          ref={svgRef}
+          viewBox={calculatedViewBox}
+          className="svg"
+          style={{
+            width: `100%`,
+            height: `100%`,
+            border: '4px solid #3b3f40',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            // overflow: 'hidden',
+            backgroundColor: '#101010',
+          }}
+        >
+          {children}
+        </svg>
+      </div>
+
+    </div>
   );
 };
-
-
 export default SvgCanvas;
