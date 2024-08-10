@@ -25,37 +25,37 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
         <div>
 
             <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-                onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
-                sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                }}
-            >
-                    
-                <ListItemIcon
+                <ListItemButton
+                    onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
                     sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : 'auto',
-                        justifyContent: 'center',
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
                     }}
                 >
-                    {
-                        open ? <>{menuIcon && menuIcon}</>  : <></>
-                    }
-                </ListItemIcon>
+                        
+                    <ListItemIcon
+                        sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        {
+                            open ? <>{menuIcon && menuIcon}</>  : <></>
+                        }
+                    </ListItemIcon>
 
-                <div>
+                    <div>
 
-                    <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
-                    {
-                        open ? children : <></>
-                    }
-                    
-                </div>
-            
-            </ListItemButton>
+                        <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
+                        {
+                            open ? children : <></>
+                        }
+                        
+                    </div>
+                
+                </ListItemButton>
             
             </ListItem>
             

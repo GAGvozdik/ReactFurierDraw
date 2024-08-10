@@ -208,8 +208,8 @@ function App() {
                 >
 
                     <SvgCanvas viewBox={viewBox}>
-                        {/* <></> */}
-                        <Graph 
+                        <></>
+                        {/* <Graph 
                             data={data}
                             animLen={animLen}
                             isPlaying={isPlaying}
@@ -220,7 +220,7 @@ function App() {
                             arrowNumb={arrowNumb}
                             contourLineWidth={contourLineWidth}
                             
-                        />
+                        /> */}
                     </SvgCanvas>
 
                 </CustomAppBar>

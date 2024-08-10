@@ -179,12 +179,21 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                     {hideMenuChildren && <>{hideMenuChildren}</>}
 
                 </Drawer>
+                
+                <Box 
+                    component="main" 
+                    style={{ 
+                        transition: 'margin-left 0.3s ease', 
+                        marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(8)} + 1px)`,
+                        marginBottom: 0,
+                    }} 
+                >
 
-                <Box component="main" style={{ transition: 'margin-left 0.4s ease', marginLeft: open ? '400px' : '50px'}} >
                     <>
                         <DrawerHeader></DrawerHeader>
                         {children}
                     </>
+
                 </Box>
 
             </Box>

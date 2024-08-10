@@ -114,10 +114,11 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     <div
       style={{
         width: `100%`,
-        height: `100%`,
+        // height: `92vh`,
+        height: `calc(100vh - 64px)`,
         display: 'grid',
-        gridTemplateColumns: '10% 80% 10%', // 3 колонки
-        gridTemplateRows: '10% 80% 10%', // 3 строки
+        gridTemplateColumns: '15% 70% 15%', // 3 колонки
+        gridTemplateRows: '4% 92% 4%', // 3 строки
 
         gap: '0px', // Отступ между элементами
         margin: '0px',
