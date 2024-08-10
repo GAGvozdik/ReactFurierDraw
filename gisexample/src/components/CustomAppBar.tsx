@@ -25,8 +25,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
-
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
+
+import PaginationSize from './iconsPagination'
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 
@@ -169,9 +170,15 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                     
                 >
                     <DrawerHeader style={{ backgroundColor: '#272b2e' }} >
+
+                        {/* <IconButton>
+                            {theme.direction === 'rtl' ? <></> : <PaginationSize></PaginationSize>}
+                        </IconButton> */}
+
                         <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                        </IconButton>
+                        </IconButton>    
+                    
                     </DrawerHeader>
 
                     <Divider />
@@ -189,10 +196,11 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                     }} 
                 >
 
-                    <>
-                        <DrawerHeader></DrawerHeader>
-                        {children}
-                    </>
+                <>
+                    <DrawerHeader></DrawerHeader>
+                    {children}
+                    
+                </>
 
                 </Box>
 

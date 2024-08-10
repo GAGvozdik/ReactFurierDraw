@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './SvgCanvas.css'; // Импорт файла стилей
 // import styles from "./SvgCanvas.module.scss" 
-
+import BasicSpeedDial from '../components/SpeedDial';
 interface AppBarProps {
   children: React.ReactNode;
   viewBox: string; // Допустим, что viewBox передается в формате "minX minY width height"
@@ -100,8 +100,13 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     };
   }, [viewboxPosition, viewboxScale, isDragging, dragStart]);
 
-  let calculatedViewBox: string = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
+  // let calculatedViewBox: string = `${viewboxPosition.x} ${viewboxPosition.y} ${canvasWidth * viewboxScale} ${canvasHeight * viewboxScale}`;
+  let calculatedViewBox: string = `190 110 200 200`;
 
+
+  // TODO make zoom return
+  // TODO make follow zoom ckeckbox
+  // TODO fix basic speed dual  
   const handleReturnZoom = () => {
     if (initialViewBox) {
       const [minX, minY, width, height] = initialViewBox.split(' ').map(Number);
@@ -125,6 +130,20 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         backgroundColor: '#232324',
       }}
     >
+
+      <div
+        style={{
+          gridColumnStart: 3,
+          gridColumnEnd: 3,
+          gridRowStart: 3,
+          gridRowEnd: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'right',
+        }}
+      >
+        {/* <BasicSpeedDial></BasicSpeedDial> */}
+      </div>
 
       <div
         style={{

@@ -11,9 +11,10 @@ interface HideMenuItemProps {
     open: boolean;
     menuItemText: string;
     menuIcon?: React.ReactNode;
+    type?: 'option' | 'optionNav';
 }
 
-const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemText, menuIcon }) => {
+const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemText, menuIcon, type = 'option' }) => {
 
     const [pr, setPr] = useState('WGS84'); // Изначальное значение pr
 
@@ -23,43 +24,76 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
 
     return (
         <div>
+            { type == 'optionNav' ? 
+                <>
+                    <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
+                        <ListItemButton
+                            // onClick={} 
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                                
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                {
+                                    open ? <>{menuIcon && menuIcon}</>  : <></>
+                                }
+                            </ListItemIcon>
 
-            <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                    onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
-                    sx={{
-                        minHeight: 48,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                    }}
-                >
+
                         
-                    <ListItemIcon
-                        sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : 'auto',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        {
-                            open ? <>{menuIcon && menuIcon}</>  : <></>
-                        }
-                    </ListItemIcon>
+                        </ListItemButton>
+                    
+                    </ListItem>
+                </>
+            :
+                <>
+                    <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
+                        <ListItemButton
+                            onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                                
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                {
+                                    open ? <>{menuIcon && menuIcon}</>  : <></>
+                                }
+                            </ListItemIcon>
 
-                    <div>
+                            <div>
 
-                        <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
-                        {
-                            open ? children : <></>
-                        }
+                                <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
+                                {
+                                    open ? children : <></>
+                                }
+                                
+                            </div>
                         
-                    </div>
-                
-                </ListItemButton>
-            
-            </ListItem>
-            
-            <Divider />
+                        </ListItemButton>
+                    
+                    </ListItem>
+                    
+                    <Divider />
+                </>
+            }
         </div>
     )
 }

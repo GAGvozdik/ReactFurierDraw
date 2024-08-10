@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import Arrow from './Arrow';
 
 interface GraphProps {
-    arrowEndWidth?: number; // Ширина наконечника стрелки
+    arrowWidth?: number; // Ширина наконечника стрелки
     lineWidth?: number;       // Ширина линии стрелки
     updateSpeed?: number;     // Скорость обновления (в миллисекундах)
     arrowNumb?: number;
@@ -15,7 +15,7 @@ interface GraphProps {
 }
 
 const Graph: React.FC<GraphProps> = ({
-    arrowEndWidth = 10, // Значение по умолчанию
+    arrowWidth = 10, // Значение по умолчанию
     lineWidth = 4,      // Значение по умолчанию
     updateSpeed = 1000, // Значение по умолчанию 1000 мс
     arrowNumb = 1,
@@ -93,6 +93,12 @@ const Graph: React.FC<GraphProps> = ({
 
     return (
         <>
+            <polyline
+                points={contourPoints}
+                fill="none"
+                stroke="#b3c213"
+                strokeWidth={contourLineWidth}
+            />
             {/* Отрисовка стрелок из currentData, исключая последние две стрелки */}
             {currentData.slice(0, arrowNumb).map((arrow, index) => {
                 let x0 = arrow[0];
@@ -108,19 +114,11 @@ const Graph: React.FC<GraphProps> = ({
                 return (
 
                     <>
-                    
-                        <polyline
-                            points={contourPoints}
-                            fill="none"
-                            stroke="#b3c213"
-                            strokeWidth={contourLineWidth}
-                        />
-
                         <Arrow
                             key={index}
                             lineWidth={
                                 isLogSize ? 
-                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / 100 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / (100 / arrowWidth)
                                 : 
                                 lineWidth
                                 
@@ -128,9 +126,9 @@ const Graph: React.FC<GraphProps> = ({
 
                             endWidth={
                                 isLogSize ? 
-                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / 10 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / (10 / arrowWidth)
                                 : 
-                                arrowEndWidth
+                                arrowWidth
                             } // Используем переданную ширину наконечника
                             x0={x0}
                             y0={y0}

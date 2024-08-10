@@ -5,6 +5,7 @@ import { createStyles, makeStyles } from '@mui/material/styles'; // Или impor
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import theme from '../src/components/theme'; 
 import CustomSlider from './components/Slider'; // Импортируйте ваш компонент CustomSlider
+
 import Graph from './components/Graph';
 import CustomAppBar from './components/CustomAppBar';
 import SvgCanvas from './components/SvgCanvas';
@@ -22,7 +23,7 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import pako from 'pako'; // Импорт pako
-
+import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
 import data from './data/data.json'; // Импортируйте ваш JSON файл
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
@@ -53,17 +54,17 @@ function App() {
         setLineWidth(value); // Обновляем состояние при изменении значения слайдера
     };
 
-    const [contourLineWidth, setContourLineWidth] = useState(0.025); // Состояние для значения слайдера
+    const [contourLineWidth, setContourLineWidth] = useState(0.7); // Состояние для значения слайдера
 
     const updateContourLineWidth = (value: number) => {
         setContourLineWidth(value); // Обновляем состояние при изменении значения слайдера
     };
 
 
-    const [arrowEndWidthValue, setArrowEndWidth] = useState(6); // Состояние для значения слайдера
+    const [arrowWidthValue, setArrowWidth] = useState(1.4); // Состояние для значения слайдера
 
-    const updatArrowEndWidth = (value: number) => {
-      setArrowEndWidth(value); // Обновляем состояние при изменении значения слайдера
+    const updateArrowWidth = (value: number) => {
+      setArrowWidth(value); // Обновляем состояние при изменении значения слайдера
     };
 
     const [arrowNumb, setArrowNumb] = useState(25); // Состояние для значения слайдера
@@ -115,7 +116,7 @@ function App() {
     const maxY = Math.max(...yValues);
 
     // Задаем размеры viewBox
-    const padding = 10; // Отступы для viewBox
+    const padding = 0; // Отступы для viewBox
     const viewWidth = maxX - minX + 2 * padding;
     const viewHeight = maxY - minY + 2 * padding;
     const viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
@@ -146,7 +147,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
-                                    <CustomSlider onChange={updateContourLineWidth} max={10} min={0} defaultValue={0.008} step={0.001}/>       
+                                    <CustomSlider onChange={updateContourLineWidth} max={2} min={0} defaultValue={0.008} step={0.0001}/>       
                                 </HideMenuItem>
 
                                 {/* <HideMenuItem 
@@ -158,20 +159,20 @@ function App() {
      
                                 </HideMenuItem> */}
 
-                                {/* <HideMenuItem 
-                                    menuItemText = {'Arrow triangle width'}
+                                <HideMenuItem 
+                                    menuItemText = {'Arrow width'}
                                     open={true} 
-                                    menuIcon={<><ChangeHistoryIcon /></>}
+                                    menuIcon={<><EastOutlinedIcon /></>}
                                 >       
-                                    <CustomSlider onChange={updatArrowEndWidth} max={30} min={0} defaultValue={8} step={0.001}/>       
-                                </HideMenuItem> */}
+                                    <CustomSlider onChange={updateArrowWidth} max={2} min={0} defaultValue={1.4} step={0.0001}/>       
+                                </HideMenuItem>
 
                                 <HideMenuItem 
                                     menuItemText = {'Arrow number'}
                                     open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatArrowNumb} max={600} min={1} defaultValue={8}/>       
+                                    <CustomSlider onChange={updatArrowNumb} max={200} min={1} defaultValue={8}/>       
                                     <></>
                                 </HideMenuItem>
                                 
@@ -209,18 +210,18 @@ function App() {
 
                     <SvgCanvas viewBox={viewBox}>
                         <></>
-                        {/* <Graph 
+                        <Graph 
                             data={data}
                             animLen={animLen}
                             isPlaying={isPlaying}
-                            arrowEndWidth={arrowEndWidthValue} // Установите ширину наконечника на 15
+                            arrowWidth={arrowWidthValue} // Установите ширину наконечника на 15
                             isLogSize={true} 
                             lineWidth={lineWidthValue}      // Установите ширину линии на 5
                             updateSpeed={speedValue}  // Установите скорость обновления на 500 мс
                             arrowNumb={arrowNumb}
                             contourLineWidth={contourLineWidth}
                             
-                        /> */}
+                        />
                     </SvgCanvas>
 
                 </CustomAppBar>
