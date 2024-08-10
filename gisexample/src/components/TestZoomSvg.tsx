@@ -10,8 +10,11 @@ interface AppBarProps {
     children: React.ReactNode;
     viewBox: string; // `190 110 200 200`
   }
+  
 
-const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
+
+
+const SVGDrag: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
     const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -85,10 +88,10 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
             <circle
                 cx={posX}
                 cy={posY}
-                r={15}
-                stroke="yellow"
-                fill="#131313"
-                strokeWidth="5"
+                r={CIRCLE_RADIUS}
+                stroke="blue"
+                fill="lightblue"
+                strokeWidth="3"
             />
           {children}
         </svg>
@@ -100,4 +103,4 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
 
 
-export default SvgCanvas;
+export default SVGDrag;

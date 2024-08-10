@@ -1,13 +1,16 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
+import './HideMenu.css'
 
+import HideMenuItem from '../components/HideMenuItem';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ArrowDropUpOutlinedIcon from '@mui/icons-material/ArrowDropUpOutlined';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 interface HidingMenuProps {
   children: React.ReactNode;
   open: boolean;
 }
-
-
 
 // Create a styled component for the scrollbar container
 const StyledScrollbarContainer = styled('div')`
@@ -30,12 +33,34 @@ const StyledScrollbarContainer = styled('div')`
 const HidingMenu: React.FC<HidingMenuProps> = ({ children, open }) => {
   return (
     <div
-    //   style={{ overflow: 'hidden' }}
-      className="scrollbar-container" // Add class for custom scrollbar styling
+      style={{ overflow: 'hidden' }}
+    //   className="scrollbar-container" // Add class for custom scrollbar styling
     >
+
       <List>
-        {/* ... Your List content ... */}
+
+        {/* <HideMenuItem 
+            menuItemText = {'Up'}
+            open={true} 
+            menuIcon={<><ArrowDropUpOutlinedIcon /></>}
+            type={'optionNav'}
+        >  
+            <></>
+        </HideMenuItem> */}
+
         {children}
+
+
+        {/* <HideMenuItem 
+            menuItemText = {'Down'}
+            open={true} 
+            menuIcon={<><ArrowDropDownOutlinedIcon /></>}
+            type={'optionNav'}
+        >  
+            <></>
+        </HideMenuItem> */}
+
+
       </List>
     </div>
   );

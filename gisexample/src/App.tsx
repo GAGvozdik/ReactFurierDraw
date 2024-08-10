@@ -6,6 +6,7 @@ import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles
 import theme from '../src/components/theme'; 
 import CustomSlider from './components/Slider'; // Импортируйте ваш компонент CustomSlider
 
+import SVGDrag from './components/TestZoomSvg';
 import Graph from './components/Graph';
 import CustomAppBar from './components/CustomAppBar';
 import SvgCanvas from './components/SvgCanvas';
@@ -116,7 +117,7 @@ function App() {
     const maxY = Math.max(...yValues);
 
     // Задаем размеры viewBox
-    const padding = 0; // Отступы для viewBox
+    const padding = 10; // Отступы для viewBox
     const viewWidth = maxX - minX + 2 * padding;
     const viewHeight = maxY - minY + 2 * padding;
     const viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
@@ -207,6 +208,9 @@ function App() {
                         </HidingMenu> 
                     }
                 >
+                    {/* <SVGDrag viewBox={viewBox}>
+                        <></>
+                    </SVGDrag>  */}
 
                     <SvgCanvas viewBox={viewBox}>
                         <></>

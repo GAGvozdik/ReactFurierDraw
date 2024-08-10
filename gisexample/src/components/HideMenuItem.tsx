@@ -26,12 +26,22 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
         <div>
             { type == 'optionNav' ? 
                 <>
-                    <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
+                    <ListItem 
+                        key={'Lambert Conic'} 
+                        disablePadding 
+                        sx={{ 
+                            // display: 'flex',
+                            display: 'block',
+                            // flexFlow: column nowrap,
+                            float: 'right',
+                            backgroundColor: 'grey' 
+                            }}
+                    >
                         <ListItemButton
-                            // onClick={} 
+                            onClick={() => {}}
                             sx={{
                                 minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
+                                // justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
                             }}
                         >
@@ -40,18 +50,26 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                                 sx={{
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
+                                    display: 'flex',
                                     justifyContent: 'center',
                                 }}
                             >
                                 {
-                                    open ? <>{menuIcon && menuIcon}</>  : <></>
+                                    open ? 
+                                        <div
+                                            style={{                                    
+                                                display: 'flex',
+                                                justifyContent: 'right',
+                                                backgroundColor: '#232323'}}
+                                            >
+                                            {menuIcon && menuIcon}
+                                        </div>  
+                                            : 
+                                        <>
+                                        </>
                                 }
-                            </ListItemIcon>
-
-
-                        
+                            </ListItemIcon>                        
                         </ListItemButton>
-                    
                     </ListItem>
                 </>
             :
