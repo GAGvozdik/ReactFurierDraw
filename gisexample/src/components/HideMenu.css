@@ -1,2 +1,43 @@
 
+.scrollbar
+{
+    overflow: hidden;
+}
+
+@media (max-height: 650px) {
+
+
+    .scrollbar
+    {
+        /* background: #626262; */
+        /* width: 75px; */
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .force-overflow
+    {
+        min-height: 850px;
+    }
+
+    .my-style::-webkit-scrollbar-track
+    {
+        background-color: #3b3f40;
+    }
+
+    .my-style::-webkit-scrollbar
+    {
+        width: 11px;
+    }
+
+    .my-style::-webkit-scrollbar-thumb
+    {
+    border-radius: 0px;
+        background-color: #232324;
+    }
+
+    
+}
+
+
 

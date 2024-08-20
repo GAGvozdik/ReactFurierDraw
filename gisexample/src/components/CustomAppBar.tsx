@@ -3,10 +3,13 @@ import * as d3 from 'd3';
 import RectangleIcon from '@mui/icons-material/Rectangle';
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 
-
 import { styled, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
+// import DrawerProps from '@mui/material/Drawer';
+import { DrawerProps } from '@mui/material'; 
+
+import MUIStyledCommonProps from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -26,7 +29,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
-
+import { useMediaQuery } from '@mui/material';
 import PaginationSize from './iconsPagination'
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
@@ -71,7 +74,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 });
 
 
-const closedMixin = (theme: Theme): CSSObject => ({
+const closedMixin = (theme: Theme, isLargeScreen?: boolean): CSSObject => ({
     transition: theme.transitions.create(
         'width', 
         {
@@ -82,15 +85,41 @@ const closedMixin = (theme: Theme): CSSObject => ({
         width: `calc(${theme.spacing(7)} + 1px)`,
         [theme.breakpoints.up('sm')]: 
         {
-            width: `calc(${theme.spacing(8)} + 1px)`,
+            // width: `calc(${theme.spacing(8)} + 1px)`,
+            width: isLargeScreen ? `calc(${theme.spacing(8)} + 1px)` : `calc(${theme.spacing(8)} + 12px)`,
         },
 });
 
 
 
+interface CustomDrawerProps extends DrawerProps {
+    isLargeScreen: boolean;
+}
+
+const CustomDrawer = styled(MuiDrawer, {
+    shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isLargeScreen',
+  })<CustomDrawerProps>(({ theme, open, isLargeScreen }) => ({ 
+    width: drawerWidth,
+        // isLargeScreen: false,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme, isLargeScreen),
+        }),
+        
+    }),
+);
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
         width: drawerWidth,
+        // isLargeScreen: false,
         flexShrink: 0,
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
@@ -119,6 +148,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => {
+
+
+    // Проверяем высоту экрана с помощью useMediaQuery
+    const isLargeScreen = useMediaQuery('(min-height: 650px)');
 
     const [isTree, setIsTree] = useState(true); 
 
@@ -163,8 +196,8 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                 </AppBar>
 
 
-                <Drawer
-                
+                <CustomDrawer
+                    isLargeScreen={isLargeScreen}
                     variant="permanent"
                     open={open}
                     
@@ -185,7 +218,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
 
                     {hideMenuChildren && <>{hideMenuChildren}</>}
 
-                </Drawer>
+                </CustomDrawer>
                 
                 <Box 
                     component="main" 
