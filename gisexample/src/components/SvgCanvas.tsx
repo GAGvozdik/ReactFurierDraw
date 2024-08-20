@@ -70,6 +70,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         
         <svg
             ref={svgRef}
+            viewBox={viewBox}
             onMouseDown={handleMouseDown}
             style={{ 
                 width: `100%`,
@@ -82,14 +83,14 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
                 backgroundColor: '#101010',
             }}
         >
-            <circle
+            {/* <circle
                 cx={posX}
                 cy={posY}
                 r={15}
                 stroke="yellow"
                 fill="#131313"
                 strokeWidth="5"
-            />
+            /> */}
           {children}
         </svg>
       </div>
