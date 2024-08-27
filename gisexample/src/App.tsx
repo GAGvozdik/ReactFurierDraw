@@ -29,7 +29,22 @@ import dataProps from './data/dataProps.json'; // Импортируйте ва�
 import data from './data/data.json'; // Импортируйте ваш JSON файл
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
+import { useSelector, useDispatch } from 'react-redux';
+import { UpdatePoints } from './components/redux/actions'; // Импорт action
+import { Point, State, UpdatePointsAction } from './components/redux/types'; // Импорт action
+
+
 import CssBaseline from '@mui/material/CssBaseline';
+
+
+const initialArrowNumb: number = 20;
+const initialArrowWidth: number = 1.4;
+const initialLineWidth: number = 0.7;
+const initialCountourLineWidth: number = 1;
+const initialAnimLenght: number = 2000;
+const initialAnimSpeed: number = 20;
+
+
 
 const darkTheme = createTheme({
   palette: {
@@ -40,88 +55,92 @@ function App() {
  
   
 
+    // const [data, setData] = useState<number[][][] | undefined>(undefined);
+
+    // useEffect(() => {
+    // //   fetch('../public/data.json')
+    //   fetch('/data.json')
+    //     .then((response) => response.json())
+    //     .then((d) => setData(d))
+    //     .catch((error) => console.error('Ошибка при загрузке данных:', error));
+    // }, []);
+  
+
+    const g = useSelector((state: State) => state.points);
+
     const [isTree, setIsTree] = useState(true); 
     const theme = useTheme();
 
-    const [speedValue, setSpeedValue] = useState(1); // Состояние для значения слайдера
-
+    const [speedValue, setSpeedValue] = useState(initialAnimSpeed); 
     const updateSpeed = (value: number) => {
-        setSpeedValue(value); // Обновляем состояние при изменении значения слайдера
+        setSpeedValue(value); 
     };
 
-    const [lineWidthValue, setLineWidth] = useState(0.7); // Состояние для значения слайдера
-
+    const [lineWidthValue, setLineWidth] = useState(initialLineWidth); 
     const updateLineWidth = (value: number) => {
-        setLineWidth(value); // Обновляем состояние при изменении значения слайдера
+        setLineWidth(value); 
     };
 
-    const [contourLineWidth, setContourLineWidth] = useState(0.7); // Состояние для значения слайдера
-
+    const [contourLineWidth, setContourLineWidth] = useState(initialCountourLineWidth); 
     const updateContourLineWidth = (value: number) => {
-        setContourLineWidth(value); // Обновляем состояние при изменении значения слайдера
+        setContourLineWidth(value); 
     };
 
-
-    const [arrowWidthValue, setArrowWidth] = useState(1.4); // Состояние для значения слайдера
-
+    const [arrowWidthValue, setArrowWidth] = useState(initialArrowWidth); 
     const updateArrowWidth = (value: number) => {
-      setArrowWidth(value); // Обновляем состояние при изменении значения слайдера
+      setArrowWidth(value); 
     };
 
-    const [arrowNumb, setArrowNumb] = useState(25); // Состояние для значения слайдера
-
+    const [arrowNumb, setArrowNumb] = useState(initialArrowNumb); 
     const updatArrowNumb = (value: number) => {
-      setArrowNumb(value); // Обновляем состояние при изменении значения слайдера
+      setArrowNumb(value); 
     };
-    
 
-    const [animLen, setAnimLen] = useState(2000); // Состояние для значения слайдера
-
+    const [animLen, setAnimLen] = useState(initialAnimLenght); 
     const updatAnimLen = (value: number) => {
-      setAnimLen(value); // Обновляем состояние при изменении значения слайдера
+      setAnimLen(value); 
     };
     
     const [isActive, setIsActive] = useState(true);
-
     const [isPlaying, setIsPlaying] = useState(false);
-
     const handlePlay = () => {
       setIsPlaying(true);
-      setIsActive(false); // Обновляем состояние при изменении значения слайдера
+      setIsActive(false); 
     };
   
     const handlePause = () => {
       setIsPlaying(false);
-      setIsActive(true); // Обновляем состояние при изменении значения слайдера
+      setIsActive(true); 
     };
   
-
+    // TODO return zoom
     const handleReturnZoom = () => {}
 
     let points = [];
-    let startArrowNumb = arrowNumb;
 
-    if (arrowNumb > Number(dataProps[0]) - 1) {
-        startArrowNumb = Number(dataProps[0]) - 1;
-    }
 
-    points = data.map(innerArray => innerArray[startArrowNumb]);
+    let viewBox: string = '190 210 200 200';
 
-    // Находим минимальные и максимальные значения x и y
-    const xValues = points.map(point => point[0]);
-    const yValues = points.map(point => point[1]);
+    if (data != undefined){
+        points = data.map(innerArray => innerArray[arrowNumb]);
 
-    const minX = Math.min(...xValues);
-    const maxX = Math.max(...xValues);
-    const minY = Math.min(...yValues);
-    const maxY = Math.max(...yValues);
 
-    // Задаем размеры viewBox
-    const padding = 10; // Отступы для viewBox
-    const viewWidth = maxX - minX + 2 * padding;
-    const viewHeight = maxY - minY + 2 * padding;
-    const viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
-    
+        // Находим минимальные и максимальные значения x и y
+        const xValues = points.map(point => point[0]);
+        const yValues = points.map(point => point[1]);
+
+        const minX = Math.min(...xValues);
+        const maxX = Math.max(...xValues);
+        const minY = Math.min(...yValues);
+        const maxY = Math.max(...yValues);
+
+        // Задаем размеры viewBox
+        const padding = 10; // Отступы для viewBox
+        const viewWidth = maxX - minX + 2 * padding;
+        const viewHeight = maxY - minY + 2 * padding;
+        viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
+    }    
+
 
     //TODO что за open={true} ??!
     return (
@@ -139,8 +158,10 @@ function App() {
                                     menuItemText = {'Rotating speed'} 
                                     menuIcon={<><SpeedIcon /></>}
                                 >  
-                                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={70} step={0.1}/>       
+                                    {/* TODO calculate max value from data config */}
+                                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={initialAnimSpeed} step={0.1}/>       
                                 </HideMenuItem>
+
 
 
                                 <HideMenuItem 
@@ -148,7 +169,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
-                                    <CustomSlider onChange={updateContourLineWidth} max={2} min={0} defaultValue={0.008} step={0.0001}/>       
+                                    <CustomSlider onChange={updateContourLineWidth} max={2} min={0} defaultValue={initialCountourLineWidth} step={0.0001}/>       
                                 </HideMenuItem>
 
                                 {/* <HideMenuItem 
@@ -165,7 +186,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><EastOutlinedIcon /></>}
                                 >       
-                                    <CustomSlider onChange={updateArrowWidth} max={2} min={0} defaultValue={1.4} step={0.0001}/>       
+                                    <CustomSlider onChange={updateArrowWidth} max={2} min={0} defaultValue={initialArrowWidth} step={0.0001}/>       
                                 </HideMenuItem>
 
                                 <HideMenuItem 
@@ -173,7 +194,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatArrowNumb} max={200} min={1} defaultValue={8}/>       
+                                    <CustomSlider onChange={updatArrowNumb} max={data ? data[0].length - 1 : 250} min={1} defaultValue={initialArrowNumb}/>       
                                     <></>
                                 </HideMenuItem>
                                 
@@ -182,7 +203,7 @@ function App() {
                                     open={true} 
                                     menuIcon={<><AccessTimeIcon /></>}
                                 >          
-                                    <CustomSlider onChange={updatAnimLen} max={1500} min={0} isActive={isActive} defaultValue={1500}/>       
+                                    <CustomSlider onChange={updatAnimLen} max={data ? data.length : 2500} min={0} isActive={isActive} defaultValue={initialAnimLenght}/>       
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
@@ -203,6 +224,9 @@ function App() {
                                 >          
                                     <></>
                                 </HideMenuItem>
+                                {/* {g} */}
+
+                                {/* <div>{data1 ? <div>{data1[0]}'jhgjhg'</div> : 'raaaaarh'}</div> */}
 
                             </>
                         </HidingMenu> 
@@ -215,7 +239,7 @@ function App() {
                     <SvgCanvas viewBox={viewBox}>
                         <></>
                         <Graph 
-                            data={data}
+                            // data={data}
                             animLen={animLen}
                             isPlaying={isPlaying}
                             arrowWidth={arrowWidthValue} // Установите ширину наконечника на 15
@@ -235,4 +259,3 @@ function App() {
 }
 
 export default App;
-

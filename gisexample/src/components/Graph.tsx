@@ -14,41 +14,82 @@ interface GraphProps {
     isLogSize?: boolean;
 }
 
+
+const initialArrowNumb: number = 20;
+const initialArrowWidth: number = 1.4;
+const initialLineWidth: number = 0.7;
+const initialCountourLineWidth: number = 1;
+const initialAnimLenght: number = 2000;
+const initialAnimSpeed: number = 20;
+
 const Graph: React.FC<GraphProps> = ({
-    arrowWidth = 10, // Значение по умолчанию
-    lineWidth = 4,      // Значение по умолчанию
-    updateSpeed = 1000, // Значение по умолчанию 1000 мс
-    arrowNumb = 1,
+    arrowWidth = 1.4, // Значение по умолчанию
+    lineWidth = 0.7,      // Значение по умолчанию
+    updateSpeed = 20, // Значение по умолчанию 1000 мс
+    arrowNumb = 20,
     isPlaying = false,
-    animLen = 8,
-    data = [],
+    animLen = 2000,
     contourLineWidth = 1,
     isLogSize = false
 }) => {
 
-    if (arrowNumb >= data[0].length - 1){
-        arrowNumb = data[0].length - 2;
+
+
+    const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); // Начальное состояние - данные из нулевого момента времени
+
+    const [data, setData] = useState<number[][][] | undefined>(undefined);
+
+    useEffect(() => {
+      // fetch('../public/data.json')
+      fetch('/data.json')
+        .then((response) => response.json())
+        .then((d) => setData(d))
+        .catch((error) => console.error('Ошибка при загрузке данных:', error));
+
+
+    }, [data]);
+
+
+    if (data != undefined){
+        if (arrowNumb >= data[0].length - 1){
+            arrowNumb = data[0].length - 2;
+        }
+        if (animLen >= data.length){
+            animLen = data.length;
+        }
     }
-    if (animLen >= data.length){
-        animLen = data.length;
-    }
+
+
+    // [[[0, 0], [200, 400], [200, 400]], [[0, 0], [700, 4210], [230, 440]], [[0, 40], [20, 100], [220, 300]]]
 
     let contourPoints: string = '';
     let points: number[][] = [];
+    let startArrows: number[][] = [];
+    let startArrowsStr: string = '';
+
 
     if (arrowNumb - 1 < 0){
-        points = data.map(innerArray => innerArray[1]);
+        points = data == undefined ? [[0, 0], [0, 0]] : data.map(innerArray => innerArray[1]);
         contourPoints = points.map(point => point.join(',')).join(' ');
+
+
+        startArrows = data == undefined ? [[0, 0], [0, 0]] : data[0];
+        startArrowsStr = startArrows.map(point => point.join(',')).join(' ');
     }
     else {
-        points = data.map(innerArray => innerArray[arrowNumb - 1]);
+        points = data == undefined ? [[0, 0], [0, 0]] : data.map(innerArray => innerArray[arrowNumb - 1]);
         contourPoints = points.map(point => point.join(',')).join(' ');
+
+
+        startArrows = data == undefined ? [[0, 0], [0, 0]] : data[0];
+        startArrowsStr = startArrows.map(point => point.join(',')).join(' ');
     }
+
+    const [delArrowStart, setDelArrowStart] = useState(false);
 
 
     const svgRef = useRef<SVGSVGElement>(null);
     const [currentDataIndex, setCurrentDataIndex] = useState(0);
-    const [currentData, setCurrentData] = useState(data[0]); // Начальное состояние - данные из нулевого момента времени
     const [animationInterval, setAnimationInterval] = useState<NodeJS.Timer | null>(null); // Храним интервал анимации
 
     useEffect(() => {
@@ -60,7 +101,7 @@ const Graph: React.FC<GraphProps> = ({
             const interval = setInterval(() => {
                 setCurrentDataIndex(prevIndex => {
                     const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
-                    setCurrentData(data[newIndex]); // Обновляем currentData
+                    data == undefined ? setCurrentData([[0, 0], [0, 0]]) : setCurrentData(data[newIndex]); // Обновляем currentData
                     return newIndex;
                 });
             }, updateSpeed); // Используем переданную скорость обновления
@@ -79,6 +120,7 @@ const Graph: React.FC<GraphProps> = ({
         // Запускаем анимацию, если isPlaying true
         if (isPlaying) {
             startAnimation();
+            setDelArrowStart(true);
         } else {
             stopAnimation(); // Останавливаем анимацию, если isPlaying false
         }
@@ -99,6 +141,49 @@ const Graph: React.FC<GraphProps> = ({
                 stroke="#b3c213"
                 strokeWidth={contourLineWidth}
             />
+
+            {/* Отрисовка начального положения стрелок */}
+            {!delArrowStart && startArrows.slice(0, arrowNumb).map((arrow, index) => {
+                let x0 = arrow[0];
+                let y0 = arrow[1] + 30;
+                let x1 = arrow[0];
+                let y1 = arrow[1];
+
+                if (index > 0) {
+                    x0 = startArrows[index - 1][0];
+                    y0 = startArrows[index - 1][1];
+                }
+
+                return (
+
+                    <>
+                        <Arrow
+                            key={index}
+                            lineWidth={
+                                isLogSize ? 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / (100 / arrowWidth)
+                                : 
+                                lineWidth
+                                
+                            }   // Используем переданную ширину линии
+
+                            endWidth={
+                                isLogSize ? 
+                                Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / (10 / arrowWidth)
+                                : 
+                                arrowWidth
+                            } // Используем переданную ширину наконечника
+                            x0={x0}
+                            y0={y0}
+                            x1={x1}
+                            y1={y1}
+                        />
+                    </>
+                );
+            })}
+
+
+
             {/* Отрисовка стрелок из currentData, исключая последние две стрелки */}
             {currentData.slice(0, arrowNumb).map((arrow, index) => {
                 let x0 = arrow[0];
@@ -136,7 +221,6 @@ const Graph: React.FC<GraphProps> = ({
                             y1={y1}
                         />
                     </>
-
                 );
             })}
         </>
