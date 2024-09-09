@@ -5,7 +5,6 @@ import { createStyles, makeStyles } from '@mui/material/styles'; // Или impor
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import theme from '../src/components/theme'; 
 import CustomSlider from './components/Slider'; // Импортируйте ваш компонент CustomSlider
-
 import SVGDrag from './components/TestZoomSvg';
 import Graph from './components/Graph';
 import CustomAppBar from './components/CustomAppBar';
@@ -236,7 +235,8 @@ function App() {
                         <></>
                     </SVGDrag>  */}
 
-                    <SvgCanvas viewBox={viewBox}>
+                    {/* <SvgCanvas viewBox={viewBox}> */}
+                    <SvgCanvas>
                         <></>
                         <Graph 
                             // data={data}
