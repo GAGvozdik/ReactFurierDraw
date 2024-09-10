@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import './HideMenu.css'
 
-import HideMenuItem from '../components/HideMenuItem';
+import HideMenuItem from './HideMenuItem';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ArrowDropUpOutlinedIcon from '@mui/icons-material/ArrowDropUpOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';

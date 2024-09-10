@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints } from '../components/redux/actions'; // Импорт action
-import { Point, State, UpdatePointsAction } from '../components/redux/types'; // Импорт action
-import DraggableSVG from './Drag';
+import { UpdatePoints } from '../redux/actions'; // Импорт action
+import { Point, State, UpdatePointsAction } from '../redux/types'; // Импорт action
+
 
 interface AppBarProps {
     children: React.ReactNode;
@@ -77,6 +77,12 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     };
   }, [isDragging]);
 
+
+
+  const g = useSelector((state: State) => state.points);
+
+
+
   return (
     <div
       style={{
@@ -90,8 +96,8 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         backgroundColor: '#232324',
       }}
     >
-      <div>{svgWidth}</div>
-      <div>{svgHeight}</div>
+      {/* <div>{g[0]}</div> */}
+
 
       <div
         ref={divRef}
@@ -148,3 +154,9 @@ export default SvgCanvas;
 //   ];
 //   dispatch<UpdatePointsAction>(UpdatePoints(newPoints)); // Исправлено 
 // };
+
+
+
+
+// const g = useSelector((state: State) => state.points);
+// 

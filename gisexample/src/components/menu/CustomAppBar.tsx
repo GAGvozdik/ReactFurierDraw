@@ -30,7 +30,7 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 import { useMediaQuery } from '@mui/material';
-import PaginationSize from './iconsPagination'
+
 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 

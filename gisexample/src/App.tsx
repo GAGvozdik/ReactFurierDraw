@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import BasicSimpleTreeView from '../src/components/catalog';
+import BasicSimpleTreeView from './components/menu/catalog';
 import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import theme from '../src/components/theme'; 
-import CustomSlider from './components/Slider'; // Импортируйте ваш компонент CustomSlider
-import SVGDrag from './components/TestZoomSvg';
-import Graph from './components/Graph';
-import CustomAppBar from './components/CustomAppBar';
-import SvgCanvas from './components/SvgCanvas';
-import HidingMenu from './components/HidingMenu';
-import HideMenuItem from './components/HideMenuItem';
+import CustomSlider from './components/menu/Slider'; // Импортируйте ваш компонент CustomSlider
+import SVGDrag from './components/svgGraphics/TestZoomSvg';
+import Graph from './components/svgGraphics/Graph';
+import CustomAppBar from './components/menu/CustomAppBar';
+import SvgCanvas from './components/svgGraphics/SvgCanvas';
+import HidingMenu from './components/menu/HidingMenu';
+import HideMenuItem from './components/menu/HideMenuItem';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -26,6 +26,7 @@ import pako from 'pako'; // Импорт pako
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
 import data from './data/data.json'; // Импортируйте ваш JSON файл
+import FileLoader from './components/redux/FileLoader'; // Импортируйте ваш JSON файл
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -224,6 +225,8 @@ function App() {
                                     <></>
                                 </HideMenuItem>
                                 {/* {g} */}
+
+                                <FileLoader />
 
                                 {/* <div>{data1 ? <div>{data1[0]}'jhgjhg'</div> : 'raaaaarh'}</div> */}
 

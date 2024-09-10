@@ -1,6 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import Arrow from './Arrow';
+import Arrow from '../svgGraphics/Arrow';
+import { useSelector, useDispatch } from 'react-redux';
+import { UpdatePoints } from '../redux/actions'; // Импорт action
+import { Point, State, UpdatePointsAction } from '../redux/types'; // Импорт action
+
 
 interface GraphProps {
     arrowWidth?: number; // Ширина наконечника стрелки
@@ -37,17 +41,21 @@ const Graph: React.FC<GraphProps> = ({
 
     const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); // Начальное состояние - данные из нулевого момента времени
 
-    const [data, setData] = useState<number[][][] | undefined>(undefined);
+    // const [data, setData] = useState<number[][][] | undefined>(undefined);
 
-    useEffect(() => {
-      // fetch('../public/data.json')
-      fetch('/data.json')
-        .then((response) => response.json())
-        .then((d) => setData(d))
-        .catch((error) => console.error('Ошибка при загрузке данных:', error));
+    // useEffect(() => {
+    //   // fetch('../public/data.json')
+    //   fetch('/data.json')
+    //     .then((response) => response.json())
+    //     .then((d) => setData(d))
+    //     .catch((error) => console.error('Ошибка при загрузке данных:', error));
 
 
-    }, [data]);
+    // }, [data]);
+
+
+    const data = useSelector((state: State) => state.points);
+
 
 
     if (data != undefined){
@@ -145,7 +153,7 @@ const Graph: React.FC<GraphProps> = ({
             {/* Отрисовка начального положения стрелок */}
             {!delArrowStart && startArrows.slice(0, arrowNumb).map((arrow, index) => {
                 let x0 = arrow[0];
-                let y0 = arrow[1] + 30;
+                let y0 = arrow[1];
                 let x1 = arrow[0];
                 let y1 = arrow[1];
 
@@ -173,6 +181,7 @@ const Graph: React.FC<GraphProps> = ({
                                 : 
                                 arrowWidth
                             } // Используем переданную ширину наконечника
+
                             x0={x0}
                             y0={y0}
                             x1={x1}
@@ -184,10 +193,10 @@ const Graph: React.FC<GraphProps> = ({
 
 
 
-            {/* Отрисовка стрелок из currentData, исключая последние две стрелки */}
+            {/* Отрисовка стрелок из currentData, исключая, хотя вроде не исключая последние две стрелки */}
             {currentData.slice(0, arrowNumb).map((arrow, index) => {
                 let x0 = arrow[0];
-                let y0 = arrow[1] + 30;
+                let y0 = arrow[1];
                 let x1 = arrow[0];
                 let y1 = arrow[1];
 
