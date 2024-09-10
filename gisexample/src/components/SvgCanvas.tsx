@@ -7,20 +7,11 @@ import { UpdatePoints } from '../components/redux/actions'; // Импорт acti
 import { Point, State, UpdatePointsAction } from '../components/redux/types'; // Импорт action
 import DraggableSVG from './Drag';
 
-let CANVAS_WIDTH = 640;
-let CANVAS_HEIGHT = 480;
-let CIRCLE_RADIUS = 48;
-
-
 interface AppBarProps {
     children: React.ReactNode;
     viewBox?: string; // `190 110 200 200`
-  }
-
+}
 const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
-
-
-
   const [svgWidth, setWidth] = useState(0);
   const [svgHeight, setHeight] = useState(0);
   const divRef = useRef<HTMLDivElement>(null); // Создаем ref для div
@@ -33,81 +24,64 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     }
   };
 
-  // Выполняем updateDimensions при монтировании и при изменении размера окна
+  // Выполняем updateDimensions при монтировании, при изменении размера окна И при изменении размеров родительского элемента
   useEffect(() => {
     updateDimensions(); // Инициализация размеров при монтировании
     window.addEventListener('resize', updateDimensions); // Добавляем обработчик события resize
-    return () => window.removeEventListener('resize', updateDimensions); // Удаляем обработчик при размонтировании
+    const resizeObserver = new ResizeObserver(updateDimensions); // Создаем ResizeObserver
+    if (divRef.current) {
+      resizeObserver.observe(divRef.current); // Наблюдаем за изменениями размеров родительского элемента
+    }
+    return () => {
+      window.removeEventListener('resize', updateDimensions); // Удаляем обработчик события resize
+      resizeObserver.disconnect(); // Отключаем ResizeObserver при размонтировании
+    };
   }, []);
-  
-
-  const dispatch = useDispatch();
-
-  const UpdateCurrentPoints = () => {
-    const newPoints: number[][][] = [
-      [
-        [ 100, 100 ],
-        [ 200, 200 ],
-        [ 300, 300 ],
-      ],
-    ];
-    dispatch<UpdatePointsAction>(UpdatePoints(newPoints)); // Исправлено 
-  };
-  // console.log(viewBox)
 
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [offset, setOffset] = useState({ x: 600, y: 300 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
-      if (event.button === 0) { // Проверяем, что нажата левая кнопка мыши
-          setIsDragging(true);
-          // setOffset({
-          //     x: offset.x + event.clientX,
-          //     y: offset.y + event.clientY,
-          // });
-      }
+    if (event.button === 0) {
+      setIsDragging(true);
+      setDragStart({ x: event.clientX, y: event.clientY }); 
+    }
   };
 
   const handleMouseMove = (event: MouseEvent) => {
-      if (isDragging) {
-          setPosition({
-              x: offset.x - event.clientX,
-              y: offset.y - event.clientY,
-          });
-      }
+    if (isDragging) {
+      const dx = event.clientX - dragStart.x;
+      const dy = event.clientY - dragStart.y;
+
+      // Обновление position
+      setPosition({ x: position.x - dx, y: position.y - dy }); 
+
+      // Обновление dragStart после каждого движения
+      setDragStart({ x: event.clientX, y: event.clientY }); 
+    }
   };
-
-
-
-
-  
 
   const handleMouseUp = () => {
-      setIsDragging(false);
+    setIsDragging(false);
   };
 
-  // Добавляем и удаляем обработчики событий при монтировании и размонтировании компонента
-  React.useEffect(() => {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
 
-      return () => {
-          document.removeEventListener('mousemove', handleMouseMove);
-          document.removeEventListener('mouseup', handleMouseUp);
-      };
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
   }, [isDragging]);
-
-
-
 
   return (
     <div
-    
       style={{
-        width: `100%`,
-        height: `calc(100vh - 64px)`,
+        width: '100%',
+        height: 'calc(100vh - 64px)',
         display: 'grid',
         gridTemplateColumns: '15% 70% 15%',
         gridTemplateRows: '4% 92% 4%',
@@ -116,52 +90,42 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         backgroundColor: '#232324',
       }}
     >
+      <div>{svgWidth}</div>
+      <div>{svgHeight}</div>
 
-
-    {/* <div>{posX}</div> */}
-    {/* <div>{posY}</div> */}
-
-    <div>{svgWidth}</div>
-    <div>{svgHeight}</div>
-    {/* <button onClick={UpdateCurrentPoints}>UpdatePoints</button> */}
-
-
-
-    <div ref={divRef} style={{ gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 2, gridRowEnd: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* <DraggableSVG /> */}
-        
+      <div
+        ref={divRef}
+        style={{
+          gridColumnStart: 2,
+          gridColumnEnd: 2,
+          gridRowStart: 2,
+          gridRowEnd: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <svg
-            ref={svgRef}
-            // viewBox={viewBox}
-            viewBox={`${position.x} ${position.y} ${svgWidth} ${svgHeight}`}
-            onMouseDown={handleMouseDown}
-            style={{ 
-                width: `100%`,
-                height: `100%`,
-                // width: CANVAS_WIDTH + 'px', 
-                // height: CANVAS_HEIGHT + 'px', 
-                border: '4px solid #3b3f40',
-                borderRadius: '10px',
-                cursor: 'pointer',
-                backgroundColor: '#101010',
-            }}
+          ref={svgRef}
+          viewBox={`${position.x} ${position.y} ${svgWidth} ${svgHeight}`}
+          onMouseDown={handleMouseDown}
+          style={{
+            width: '100%',
+            height: '100%',
+            border: '4px solid #3b3f40',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            backgroundColor: '#101010',
+          }}
         >
           {children}
-
-        </svg> 
-
+        </svg>
       </div>
     </div>
   );
 };
 
-
-
-
 export default SvgCanvas;
-
-
-
 // let g =[
 //   [
 //     [292.58975360596975, 214.56308599971317], 
@@ -172,3 +136,15 @@ export default SvgCanvas;
 //   ]
 // ];
     
+// const dispatch = useDispatch();
+
+// const UpdateCurrentPoints = () => {
+//   const newPoints: number[][][] = [
+//     [
+//       [ 100, 100 ],
+//       [ 200, 200 ],
+//       [ 300, 300 ],
+//     ],
+//   ];
+//   dispatch<UpdatePointsAction>(UpdatePoints(newPoints)); // Исправлено 
+// };
