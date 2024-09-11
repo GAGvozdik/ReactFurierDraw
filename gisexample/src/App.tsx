@@ -24,8 +24,6 @@ import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import DownloadIcon from '@mui/icons-material/Download';
 import pako from 'pako'; // Импорт pako
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
-import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
-// import data from './data/data.json'; // Импортируйте ваш JSON файл
 import FileLoader from './components/redux/FileLoader'; // Импортируйте ваш JSON файл
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
