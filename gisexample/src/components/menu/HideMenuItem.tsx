@@ -80,20 +80,27 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, menuItemText, men
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                // float: 'center'
                             }}
                         >
-                                
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {
-                                    <>{menuIcon && menuIcon}</>
-                                }
-                            </ListItemIcon>
+                                {       
+                                    open ? 
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: open ? 3 : 'auto',
+                                                justifyContent: 'left',
+                                                
+                                            }}
+                                        >
+                                            {
+                                                <>{menuIcon && menuIcon}</>
+                                            }
+                                        </ListItemIcon>                                     
+                                    : 
+                                    <></>
+                                }        
+
 
                             <div>
 

@@ -36,6 +36,9 @@ import { UpdatePoints } from '../redux/actions'; // Импорт action
 import { Point, State, UpdateOpenCloseAction } from '../redux/types'; // Импорт action
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 
+
+
+
 const drawerWidth: number = 350;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -153,7 +156,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
 
 
     // Проверяем высоту экрана с помощью useMediaQuery
-    const isLargeScreen = useMediaQuery('(min-height: 650px)');
+    const isLargeScreen = useMediaQuery('(min-height: 450px)');
 
     const theme = useTheme();
     const handleDrawerClose = () => {

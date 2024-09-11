@@ -38,21 +38,7 @@ const Graph: React.FC<GraphProps> = ({
 }) => {
 
 
-
     const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); // Начальное состояние - данные из нулевого момента времени
-
-    // const [data, setData] = useState<number[][][] | undefined>(undefined);
-
-    // useEffect(() => {
-    //   // fetch('../public/data.json')
-    //   fetch('/data.json')
-    //     .then((response) => response.json())
-    //     .then((d) => setData(d))
-    //     .catch((error) => console.error('Ошибка при загрузке данных:', error));
-
-
-    // }, [data]);
-
 
     const data = useSelector((state: State) => state.points);
 

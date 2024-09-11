@@ -28,8 +28,8 @@ import FileLoader from './components/redux/FileLoader'; // Импортируй�
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints } from './components/redux/actions'; // Импорт action
-import { Point, State, UpdatePointsAction } from './components/redux/types'; // Импорт action
+import { UpdatePoints, UpdatePosition } from './components/redux/actions'; // Импорт action
+import { Point, State, UpdatePointsAction, UpdatePositionAction } from './components/redux/types'; // Импорт action
 
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -95,8 +95,31 @@ function App() {
       setIsActive(true); 
     };
   
+    const [zoomReturn, setZoomReturn] = useState<boolean>(false);
+
+
     // TODO return zoom
-    const handleReturnZoom = () => {}
+    const handleReturnZoom = () => {
+        setZoomReturn(true); 
+
+    }
+
+
+
+
+// const UpdateCurrentPoints = () => {
+//   const newPoints: number[][][] = [
+//     [
+//       [ 100, 100 ],
+//       [ 200, 200 ],
+//       [ 300, 300 ],
+//     ],
+//   ];
+//    
+// };
+
+
+
 
     const data = useSelector((state: State) => state.points);
 
@@ -167,7 +190,7 @@ function App() {
                                         <Button onClick={handlePause}>Pause</Button>
                                     </ButtonGroup>
                                 </HideMenuItem>
-                                
+{/*                                 
                                 <HideMenuItem 
                                     menuItemText = {''}
                                     menuIcon={<><ZoomInMapIcon onClick={handleReturnZoom}/></>}
@@ -175,7 +198,7 @@ function App() {
                                     <> 
                                         <Button variant="outlined">Return start zoom</Button>
                                     </>
-                                </HideMenuItem>
+                                </HideMenuItem> */}
                            
                                 <HideMenuItem 
                                     menuItemText = {''}
@@ -192,12 +215,9 @@ function App() {
                         </div>
                     }
                 >
-                    {/* <SVGDrag viewBox={viewBox}>
-                        <></>
-                    </SVGDrag>  */}
-
-                    {/* <SvgCanvas viewBox={viewBox}> */}
-                    <SvgCanvas>
+                    <SvgCanvas
+                        // zoomReturn={zoomReturn}
+                    >
                         <></>
                         <Graph 
                             // data={data}

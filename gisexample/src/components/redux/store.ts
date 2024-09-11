@@ -15,6 +15,7 @@ const initialState: State = {
   ],
 
   open: true,
+  position: {x: 0, y: 0}
 };
 
 // Reducer-функция
@@ -24,6 +25,8 @@ const reducer = (state: State = initialState, action: Action): State => {
       return { ...state, points: action.payload };
     case 'UPDATE_OPEN':
       return { ...state, open: action.payload };
+    case 'UPDATE_POSITION':
+      return { ...state, position: action.payload };
     default:
       return state;
   }

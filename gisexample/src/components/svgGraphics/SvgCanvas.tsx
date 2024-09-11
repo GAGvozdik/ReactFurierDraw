@@ -6,14 +6,56 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UpdatePoints } from '../redux/actions'; // Импорт action
 import { Point, State, UpdatePointsAction } from '../redux/types'; // Импорт action
 
+import { UpdateOpenClose } from '../redux/actions'; // Импорт action
+import { UpdateOpenCloseAction } from '../redux/types'; // Импорт action
+import { Button } from '@mui/material';
+import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import { IconButton, styled } from '@mui/material';
+
+
 
 interface AppBarProps {
     children: React.ReactNode;
     viewBox?: string; // `190 110 200 200`
 }
 const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
+
+
+  const data = useSelector((state: State) => state.points);
+//   const dispatch = useDispatch();
+// const [open, setOpen] = useState(false);
+
+// const handleDrawerOpen = () => {
+//     setOpen(true);
+//     dispatch<UpdateOpenCloseAction>(UpdateOpenClose(open)); 
+    
+// };
+  let points: number[][];
+
+  points = data.map(innerArray => innerArray[data[0].length - 1 ]);
+
+  // Находим минимальные и максимальные значения x и y
+  const xValues = points.map(point => point[0]);
+  const yValues = points.map(point => point[1]);
+
+  const minX = Math.min(...xValues);
+  const maxX = Math.max(...xValues);
+  const minY = Math.min(...yValues);
+  const maxY = Math.max(...yValues);
+
+  // Задаем размеры viewBox
+  const padding = 10; // Отступы для viewBox
+  const viewWidth = maxX - minX + 2 * padding;
+  const viewHeight = maxY - minY + 2 * padding;
+
+
+
+
   const [svgWidth, setWidth] = useState(0);
   const [svgHeight, setHeight] = useState(0);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
   const divRef = useRef<HTMLDivElement>(null); // Создаем ref для div
 
   // Функция для обновления размеров
@@ -38,10 +80,16 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     };
   }, []);
 
+  // const initialPosition = useSelector((state: State) => state.position);
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({x: 0, y: 0});
+
+  // useEffect(() => {setPosition({ x: initialPosition.x, y: initialPosition.y })}, [initialPosition])
+
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  const [scale, setScale] = useState(1);
 
   const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
     if (event.button === 0) {
@@ -51,15 +99,19 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   };
 
   const handleMouseMove = (event: MouseEvent) => {
+    setX(event.clientX);
+    setY(event.clientY);
     if (isDragging) {
       const dx = event.clientX - dragStart.x;
       const dy = event.clientY - dragStart.y;
 
       // Обновление position
-      setPosition({ x: position.x - dx, y: position.y - dy }); 
+      setPosition({ x: position.x - dx * scale, y: position.y - dy * scale }); 
 
       // Обновление dragStart после каждого движения
       setDragStart({ x: event.clientX, y: event.clientY }); 
+
+
     }
   };
 
@@ -77,30 +129,53 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     };
   }, [isDragging]);
 
+  const handleZoom = (event: WheelEvent) => {
+    const zoomStep = 1.02; // Шаг зума
+    
+    // Обновляем положение SVG
+    // setPosition({
+    //   x: event.clientX + svgWidth / 2,
+    //   y: event.clientY + svgHeight / 2 
+    // });
+
+    if (event.deltaY < 0) {
+      setScale(scale * zoomStep);
+    } else {
+      setScale(scale / zoomStep);
+    }
+
+    // Определяем точку зума (курсор мыши)
+    const zoomPointX = event.clientX - position.x;
+    const zoomPointY = event.clientY - position.y;
 
 
-  const data = useSelector((state: State) => state.points);
-  let points: number[][];
-  if (data != undefined){
-    points = data.map(innerArray => innerArray[data[0].length - 1 ]);
+  };
 
 
-    // Находим минимальные и максимальные значения x и y
-    const xValues = points.map(point => point[0]);
-    const yValues = points.map(point => point[1]);
 
-    const minX = Math.min(...xValues);
-    const maxX = Math.max(...xValues);
-    const minY = Math.min(...yValues);
-    const maxY = Math.max(...yValues);
+  useEffect(() => {
+    document.addEventListener('wheel', handleZoom);
 
-    // Задаем размеры viewBox
-    const padding = 10; // Отступы для viewBox
-    const viewWidth = maxX - minX + 2 * padding;
-    const viewHeight = maxY - minY + 2 * padding;
-    viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
-}    
+    return () => {
+      document.removeEventListener('wheel', handleZoom);
+    };
+  }, [scale]);
 
+  
+  const getDefPos = () => {
+    setPosition({x: 0, y: 0});
+    setScale(1);
+  };
+  
+
+  const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    color: theme.palette.common.white, // Сделаем иконку светлой
+    transition: theme.transitions.create(['background-color', 'box-shadow']), // Добавляем анимацию перехода
+    '&:hover': {
+      backgroundColor: 'grey', // Изменяем фон при наведении
+    },
+
+  }));
 
 
   return (
@@ -116,9 +191,26 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         backgroundColor: '#232324',
       }}
     >
-      {/* <div>{g[0]}</div> */}
+      {/* <div>{position.x}----{position.y}</div> */}
+      <div
+        style={{
+          gridColumnStart: 3,
+          gridColumnEnd: 3,
+          gridRowStart: 2,
+          gridRowEnd: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <StyledIconButton onClick={getDefPos}>
+          <ZoomInMapIcon />
+        </StyledIconButton>
+      </div>
 
 
+
+      {/* <div>{x}----{y}---{dragStart.x}--{dragStart.y}</div> */}
       <div
         ref={divRef}
         style={{
@@ -133,7 +225,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
       >
         <svg
           ref={svgRef}
-          viewBox={`${position.x} ${position.y} ${svgWidth} ${svgHeight}`}
+          viewBox={`${position.x} ${position.y} ${scale * svgWidth} ${scale * svgHeight}`}
           onMouseDown={handleMouseDown}
           style={{
             width: '100%',
@@ -180,3 +272,17 @@ export default SvgCanvas;
 
 // const g = useSelector((state: State) => state.points);
 // 
+
+
+
+// const [data, setData] = useState<number[][][] | undefined>(undefined);
+
+// useEffect(() => {
+//   // fetch('../public/data.json')
+//   fetch('/data.json')
+//     .then((response) => response.json())
+//     .then((d) => setData(d))
+//     .catch((error) => console.error('Ошибка при загрузке данных:', error));
+
+
+// }, [data]);
