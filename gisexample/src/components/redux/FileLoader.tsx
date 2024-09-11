@@ -43,7 +43,7 @@ const FileLoader: React.FC = () => {
         style={{ display: 'none' }} // Скрываем input
         onChange={handleFileChange}
       />
-      <Button variant="contained" onClick={handleClick}>
+      <Button variant="outlined" onClick={handleClick}>
         Load data
       </Button>
     </div>

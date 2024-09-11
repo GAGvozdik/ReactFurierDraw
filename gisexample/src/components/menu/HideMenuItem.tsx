@@ -5,34 +5,34 @@ import ListItemText from '@mui/material/ListItemText';
 import React, { useRef, useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
+import { useSelector, useDispatch } from 'react-redux';
+import { Point, State, UpdateOpenCloseAction } from '../redux/types'; // Импорт action
 
 interface HideMenuItemProps {
     children: React.ReactNode;
-    open: boolean;
+
     menuItemText: string;
     menuIcon?: React.ReactNode;
     type?: 'option' | 'optionNav';
 }
 
-const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemText, menuIcon, type = 'option' }) => {
+const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, menuItemText, menuIcon, type = 'option' }) => {
 
-    const [pr, setPr] = useState('WGS84'); // Изначальное значение pr
 
-    const handleListItemClick = (index: string) => {
-        setPr(index);
-    };
+    const open = useSelector((state: State) => state.open);
+
+
 
     return (
         <div>
+            
             { type == 'optionNav' ? 
                 <>
                     <ListItem 
                         key={'Lambert Conic'} 
                         disablePadding 
                         sx={{ 
-                            // display: 'flex',
                             display: 'block',
-                            // flexFlow: column nowrap,
                             float: 'right',
                             backgroundColor: 'grey' 
                             }}
@@ -41,7 +41,6 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                             onClick={() => {}}
                             sx={{
                                 minHeight: 48,
-                                // justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
                             }}
                         >
@@ -76,7 +75,7 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                 <>
                     <ListItem key={'Lambert Conic'} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
-                            onClick={() => handleListItemClick('Lambert Conic')} // Добавляем обработчик клика
+                            
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
@@ -92,16 +91,17 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, open, menuItemTex
                                 }}
                             >
                                 {
-                                    open ? <>{menuIcon && menuIcon}</>  : <></>
+                                    <>{menuIcon && menuIcon}</>
                                 }
                             </ListItemIcon>
 
                             <div>
 
-                                <ListItemText primary={menuItemText} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={menuItemText} sx={{ opacity: !open ? 1 : 0 }} />
                                 {
-                                    open ? children : <></>
+                                    !open ? children : <></>
                                 }
+                                
                                 
                             </div>
                         

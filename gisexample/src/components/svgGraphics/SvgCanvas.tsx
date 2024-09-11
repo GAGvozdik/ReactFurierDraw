@@ -79,7 +79,27 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
 
 
-  const g = useSelector((state: State) => state.points);
+  const data = useSelector((state: State) => state.points);
+  let points: number[][];
+  if (data != undefined){
+    points = data.map(innerArray => innerArray[data[0].length - 1 ]);
+
+
+    // Находим минимальные и максимальные значения x и y
+    const xValues = points.map(point => point[0]);
+    const yValues = points.map(point => point[1]);
+
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    // Задаем размеры viewBox
+    const padding = 10; // Отступы для viewBox
+    const viewWidth = maxX - minX + 2 * padding;
+    const viewHeight = maxY - minY + 2 * padding;
+    viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
+}    
 
 
 

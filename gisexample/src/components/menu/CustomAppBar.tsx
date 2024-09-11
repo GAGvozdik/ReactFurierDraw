@@ -30,8 +30,10 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
 import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 import { useMediaQuery } from '@mui/material';
-
-
+import { UpdateOpenClose } from '../redux/actions'; // Импорт action
+import { useSelector, useDispatch } from 'react-redux';
+import { UpdatePoints } from '../redux/actions'; // Импорт action
+import { Point, State, UpdateOpenCloseAction } from '../redux/types'; // Импорт action
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 
 const drawerWidth: number = 350;
@@ -153,20 +155,22 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
     // Проверяем высоту экрана с помощью useMediaQuery
     const isLargeScreen = useMediaQuery('(min-height: 650px)');
 
-    const [isTree, setIsTree] = useState(true); 
-
     const theme = useTheme();
     const handleDrawerClose = () => {
-        setIsTree(true);
         setOpen(false);
+        dispatch<UpdateOpenCloseAction>(UpdateOpenClose(open)); 
     };
 
-    const [open, setOpen] = React.useState(false);
+    
+    const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
+
     const handleDrawerOpen = () => {
         setOpen(true);
+        dispatch<UpdateOpenCloseAction>(UpdateOpenClose(open)); 
         
     };
-
+    
 
     
     return (
@@ -187,9 +191,9 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                         >
                             <MenuIcon />
                         </IconButton>
-
+                        
                         <Typography variant="h6" noWrap component="div">
-                            Furier Draw
+                            Furier Draw 
                         </Typography>
 
                     </Toolbar>
@@ -203,6 +207,7 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
                     
                 >
                     <DrawerHeader style={{ backgroundColor: '#272b2e' }} >
+                    
 
                         {/* <IconButton>
                             {theme.direction === 'rtl' ? <></> : <PaginationSize></PaginationSize>}
@@ -231,11 +236,13 @@ const CustomAppBar: React.FC<AppBarProps> = ({ children, hideMenuChildren }) => 
 
                 <>
                     <DrawerHeader></DrawerHeader>
+                    
                     {children}
                     
                 </>
 
                 </Box>
+                
 
             </Box>
         </div>

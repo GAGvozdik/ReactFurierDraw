@@ -8,8 +8,7 @@ import CustomSlider from './components/menu/Slider'; // Импортируйте
 import SVGDrag from './components/svgGraphics/TestZoomSvg';
 import Graph from './components/svgGraphics/Graph';
 import CustomAppBar from './components/menu/CustomAppBar';
-import SvgCanvas from './components/svgGraphics/SvgCanvas';
-import HidingMenu from './components/menu/HidingMenu';
+import SvgCanvas from './components/svgGraphics/SvgCanvas'; 
 import HideMenuItem from './components/menu/HideMenuItem';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
@@ -22,10 +21,11 @@ import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import DownloadIcon from '@mui/icons-material/Download';
 import pako from 'pako'; // Импорт pako
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import dataProps from './data/dataProps.json'; // Импортируйте ваш JSON файл
-import data from './data/data.json'; // Импортируйте ваш JSON файл
+// import data from './data/data.json'; // Импортируйте ваш JSON файл
 import FileLoader from './components/redux/FileLoader'; // Импортируйте ваш JSON файл
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
@@ -33,9 +33,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UpdatePoints } from './components/redux/actions'; // Импорт action
 import { Point, State, UpdatePointsAction } from './components/redux/types'; // Импорт action
 
-
 import CssBaseline from '@mui/material/CssBaseline';
-
 
 const initialArrowNumb: number = 20;
 const initialArrowWidth: number = 1.4;
@@ -44,27 +42,13 @@ const initialCountourLineWidth: number = 1;
 const initialAnimLenght: number = 2000;
 const initialAnimSpeed: number = 20;
 
-
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 });
+
 function App() {
- 
-  
-
-    // const [data, setData] = useState<number[][][] | undefined>(undefined);
-
-    // useEffect(() => {
-    // //   fetch('../public/data.json')
-    //   fetch('/data.json')
-    //     .then((response) => response.json())
-    //     .then((d) => setData(d))
-    //     .catch((error) => console.error('Ошибка при загрузке данных:', error));
-    // }, []);
-  
 
     const g = useSelector((state: State) => state.points);
 
@@ -116,30 +100,8 @@ function App() {
     // TODO return zoom
     const handleReturnZoom = () => {}
 
-    let points = [];
+    const data = useSelector((state: State) => state.points);
 
-
-    let viewBox: string = '190 210 200 200';
-
-    if (data != undefined){
-        points = data.map(innerArray => innerArray[arrowNumb]);
-
-
-        // Находим минимальные и максимальные значения x и y
-        const xValues = points.map(point => point[0]);
-        const yValues = points.map(point => point[1]);
-
-        const minX = Math.min(...xValues);
-        const maxX = Math.max(...xValues);
-        const minY = Math.min(...yValues);
-        const maxY = Math.max(...yValues);
-
-        // Задаем размеры viewBox
-        const padding = 10; // Отступы для viewBox
-        const viewWidth = maxX - minX + 2 * padding;
-        const viewHeight = maxY - minY + 2 * padding;
-        viewBox = `${minX - padding} ${minY - padding} ${viewWidth} ${viewHeight}`;
-    }    
 
 
     //TODO что за open={true} ??!
@@ -147,14 +109,11 @@ function App() {
         <div className="App" >
             <ThemeProvider theme={darkTheme}>
                 <CustomAppBar
-
-
-                    
                     hideMenuChildren={
-                        <HidingMenu open={true}>
-                            <> 
+                        <div className="scrollbar my-style">
+                            <div className="force-overflow">
+
                                 <HideMenuItem 
-                                    open={true} 
                                     menuItemText = {'Rotating speed'} 
                                     menuIcon={<><SpeedIcon /></>}
                                 >  
@@ -166,7 +125,6 @@ function App() {
 
                                 <HideMenuItem 
                                     menuItemText = {'Line width'}
-                                    open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
                                     <CustomSlider onChange={updateContourLineWidth} max={2} min={0} defaultValue={initialCountourLineWidth} step={0.0001}/>       
@@ -174,7 +132,6 @@ function App() {
 
                                 {/* <HideMenuItem 
                                     menuItemText = {'Arrow line width'}
-                                    open={true} 
                                     menuIcon={<><WidthNormalIcon /></>}
                                 >         
                                     <CustomSlider onChange={updateLineWidth} max={10} min={0} defaultValue={0.25} step={0.001}/>       
@@ -183,7 +140,6 @@ function App() {
 
                                 <HideMenuItem 
                                     menuItemText = {'Arrow width'}
-                                    open={true} 
                                     menuIcon={<><EastOutlinedIcon /></>}
                                 >       
                                     <CustomSlider onChange={updateArrowWidth} max={2} min={0} defaultValue={initialArrowWidth} step={0.0001}/>       
@@ -191,7 +147,6 @@ function App() {
 
                                 <HideMenuItem 
                                     menuItemText = {'Arrow number'}
-                                    open={true} 
                                     menuIcon={<><CallSplitIcon /></>}
                                 >          
                                     <CustomSlider onChange={updatArrowNumb} max={data ? data[0].length - 1 : 250} min={1} defaultValue={initialArrowNumb}/>       
@@ -200,7 +155,6 @@ function App() {
                                 
                                 <HideMenuItem 
                                     menuItemText = {'Animation len'}
-                                    open={true} 
                                     menuIcon={<><AccessTimeIcon /></>}
                                 >          
                                     <CustomSlider onChange={updatAnimLen} max={data ? data.length : 2500} min={0} isActive={isActive} defaultValue={initialAnimLenght}/>       
@@ -208,7 +162,6 @@ function App() {
                                 
                                 <HideMenuItem 
                                     menuItemText = {''}
-                                    open={true} 
                                     menuIcon={<><PlayCircleIcon /></>}
                                 >          
                                     <ButtonGroup variant="outlined" aria-label="Basic button group">
@@ -218,20 +171,27 @@ function App() {
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
-                                    menuItemText = {'Return start zoom'}
-                                    open={true} 
+                                    menuItemText = {''}
                                     menuIcon={<><ZoomInMapIcon onClick={handleReturnZoom}/></>}
                                 >          
-                                    <></>
+                                    <> 
+                                        <Button variant="outlined">Return start zoom</Button>
+                                    </>
                                 </HideMenuItem>
-                                {/* {g} */}
-
-                                <FileLoader />
+                           
+                                <HideMenuItem 
+                                    menuItemText = {''}
+                                    menuIcon={<><DownloadIcon /></>}
+                                >          
+                                    <FileLoader />
+                                </HideMenuItem>
+                                
 
                                 {/* <div>{data1 ? <div>{data1[0]}'jhgjhg'</div> : 'raaaaarh'}</div> */}
 
-                            </>
-                        </HidingMenu> 
+                            </div>
+
+                        </div>
                     }
                 >
                     {/* <SVGDrag viewBox={viewBox}>
