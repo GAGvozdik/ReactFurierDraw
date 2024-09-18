@@ -25,6 +25,15 @@ import DownloadIcon from '@mui/icons-material/Download';
 import pako from 'pako'; // Импорт pako
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import FileLoader from './components/redux/FileLoader'; // Импортируйте ваш JSON файл
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -182,13 +191,33 @@ function App() {
                                 </HideMenuItem>
                                 
                                 <HideMenuItem 
-                                    menuItemText = {''}
+                                    menuItemText = {'Play animation'}
                                     menuIcon={<><PlayCircleIcon /></>}
                                 >          
                                     <ButtonGroup variant="outlined" aria-label="Basic button group">
                                         <Button onClick={handlePlay}>Play</Button>
                                         <Button onClick={handlePause}>Pause</Button>
                                     </ButtonGroup>
+                                </HideMenuItem>
+
+                                <HideMenuItem 
+                                    menuItemText = {'Zoom settings'}
+                                    menuIcon={<><CenterFocusStrongIcon /></>}
+                                >          
+                                    <FormControl>
+                                    <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="demo-radio-buttons-group-label"
+                                        defaultValue="Zoom to center"
+                                        name="radio-buttons-group"
+                                    >
+                                        <FormControlLabel value="Zoom to center" control={<Radio />} label="Zoom to center" />
+                                        <FormControlLabel value="Zoom to mouse" control={<Radio />} label="Zoom to mouse" />
+                                        <FormControlLabel value="Zoom to last arrow" control={<Radio />} label="Zoom to last arrow" />
+                                    </RadioGroup>
+                                    </FormControl>
+                                    {/* <Button variant="outlined">Return default position</Button> */}
+
                                 </HideMenuItem>
 {/*                                 
                                 <HideMenuItem 

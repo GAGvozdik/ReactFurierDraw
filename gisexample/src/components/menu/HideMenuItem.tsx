@@ -80,26 +80,30 @@ const HideMenuItem: React.FC<HideMenuItemProps> = ({ children, menuItemText, men
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+
+                                padding: open ? 'auto' : 0,
+                                // paddingLeft: open ? '20' : 0,
                                 // float: 'center'
                             }}
                         >
-                                {       
-                                    open ? 
-                                        <ListItemIcon
-                                            sx={{
-                                                minWidth: 0,
-                                                mr: open ? 3 : 'auto',
-                                                justifyContent: 'left',
-                                                
-                                            }}
-                                        >
-                                            {
-                                                <>{menuIcon && menuIcon}</>
-                                            }
-                                        </ListItemIcon>                                     
-                                    : 
-                                    <></>
-                                }        
+
+                                
+                               <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        
+                                        mr: 3.1,
+                                        // justifyContent: 'center',
+                                        // margin: 'auto'
+                                        // padding: 2,
+
+                                        
+                                    }}
+                                >
+                                    {
+                                        <>{menuIcon && menuIcon}</>
+                                    }
+                                </ListItemIcon>     
 
 
                             <div>
