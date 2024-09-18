@@ -158,25 +158,26 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
   }, [isDragging]);
 
   const handleZoom = (event: WheelEvent) => {
-    // const zoomStep = 1.02; // Шаг зума
-    const zoomStep = 0.1; 
+    const zoomStep = 1.1; // Шаг зума
+    // const zoomStep = 0.1; 
     
     setDragStart({ x: event.clientX, y: event.clientY }); 
 
     if (event.deltaY < 0 && scale < zoomLimit.max) {
-      setScale(scale + zoomStep);
-
+      
       setPosition({ 
-        x: position.x - svgWidth * zoomStep / 2,
-        y: position.y - svgHeight * zoomStep / 2,
+        x: position.x - svgWidth * (zoomStep * scale - scale) / 2,
+        y: position.y - svgHeight * (zoomStep * scale - scale) / 2,
       }); 
 
+      setScale(scale * zoomStep);
+
     } else if (scale > zoomLimit.min) {
-      setScale(scale - zoomStep);
+      setScale(scale / zoomStep);
 
       setPosition({ 
-        x: position.x + svgWidth * zoomStep / 2,
-        y: position.y + svgHeight * zoomStep / 2,
+        x: position.x - svgWidth * (scale / zoomStep - scale) / 2,
+        y: position.y - svgHeight * (scale / zoomStep - scale) / 2,
       }); 
     }
   };
@@ -237,7 +238,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           color: 'white',
         }}
       >
-        <div>
+        {/* <div>
           <b>position : </b>{position.x.toFixed()}--{position.y.toFixed()}
         </div>
 
@@ -258,7 +259,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         </div>
         <div> 
           <b>x : </b>{x.toFixed()} y : {y.toFixed()}
-        </div>
+        </div> */}
 
       </div>
 
@@ -318,13 +319,13 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           
 
 
-          {/* <circle r="45" cx={position.x} cy={position.y} fill="red" />
-          <circle r="15" cx={position.x + svgWidth * scale / 2} cy={position.y + svgHeight * scale / 2} fill="green" />
-          <circle r="15" cx={maxX} cy={minY} fill="grey" />
-          <circle r="15" cx={minX} cy={maxY} fill="grey" />
-          <circle r="15" cx={minX} cy={minY} fill="grey" />
+          {/* <circle r={5 * scale} cx={position.x} cy={position.y} fill="red" />
+          <circle r={5 * scale} cx={position.x + svgWidth * scale / 2} cy={position.y + svgHeight * scale / 2} fill="green" />
+          <circle r={5 * scale} cx={maxX} cy={minY} fill="grey" />
+          <circle r={5 * scale} cx={minX} cy={maxY} fill="grey" />
+          <circle r={5 * scale} cx={minX} cy={minY} fill="grey" />
           <circle 
-            r="25" 
+            r={5 * scale} 
             cx={minX + (maxX - minX) / 2} 
             cy={minY + (maxY - minY) / 2} 
             fill="purple" 
