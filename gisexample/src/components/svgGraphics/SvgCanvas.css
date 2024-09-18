@@ -9,3 +9,9 @@
   transition: box-shadow 0.3s ease-in-out; */
 }
 
+.prevent-select {
+  background-color: brown;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}

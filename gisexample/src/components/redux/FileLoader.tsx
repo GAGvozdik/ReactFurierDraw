@@ -18,7 +18,7 @@ const FileLoader: React.FC = () => {
       reader.onload = (e) => {
         try {
           const jsonData = JSON.parse(e.target?.result as string); // Парсим JSON
-          setData(jsonData);
+          // setData(jsonData);
           dispatch<UpdatePointsAction>(UpdatePoints(jsonData)); // Отправляем данные в Redux
         } catch (error) {
           console.error('Ошибка при разборе JSON:', error);

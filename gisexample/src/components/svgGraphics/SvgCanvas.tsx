@@ -11,6 +11,7 @@ import { UpdateOpenCloseAction } from '../redux/types'; // Импорт action
 import { Button } from '@mui/material';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import { IconButton, styled } from '@mui/material';
+import './SvgCanvas.css';
 
 
 
@@ -18,8 +19,8 @@ interface AppBarProps {
     children: React.ReactNode;
     viewBox?: string; // `190 110 200 200`
 }
-const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
-
+const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
+// function SvgCanvas() {
 
   const data = useSelector((state: State) => state.points);
 //   const dispatch = useDispatch();
@@ -50,22 +51,6 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
 
 
-
-  const [svgWidth, setWidth] = useState(0);
-  const [svgHeight, setHeight] = useState(0);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-
-  const divRef = useRef<HTMLDivElement>(null); // Создаем ref для div
-
-  // Функция для обновления размеров
-  const updateDimensions = () => {
-    if (divRef.current) {
-      setWidth(divRef.current.offsetWidth);
-      setHeight(divRef.current.offsetHeight);
-    }
-  };
-
   // Выполняем updateDimensions при монтировании, при изменении размера окна И при изменении размеров родительского элемента
   useEffect(() => {
     updateDimensions(); // Инициализация размеров при монтировании
@@ -77,17 +62,60 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
     return () => {
       window.removeEventListener('resize', updateDimensions); // Удаляем обработчик события resize
       resizeObserver.disconnect(); // Отключаем ResizeObserver при размонтировании
+      
     };
+
+    
   }, []);
 
-  // const initialPosition = useSelector((state: State) => state.position);
-  const svgRef = useRef<SVGSVGElement | null>(null);
-  const [position, setPosition] = useState({x: 0, y: 0});
 
-  // useEffect(() => {setPosition({ x: initialPosition.x, y: initialPosition.y })}, [initialPosition])
+  const divRef = useRef<HTMLDivElement>(null); // Создаем ref для div
+
+  let initWidth = 0;
+  let initHeight = 0;
+  
+  if (data){
+    if (divRef.current) {
+      initWidth = divRef.current.offsetWidth;
+      initHeight = divRef.current.offsetHeight;
+      
+    }
+
+  }
+  
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  
+  const zoomLimit = {max: 150, min: 0};
+
+
+  const [svgWidth, setWidth] = useState(maxX * 10);
+  const [svgHeight, setHeight] = useState(maxY * 10);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [position, setPosition] = useState({x: 0, y: 0});
+  const [dragStart, setDragStart] = useState({x: 0, y: 0});
+
+  // {x: maxX * 2, y: maxY * 2}
 
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  // Функция для обновления размеров
+  const updateDimensions = () => {
+    if (divRef.current) {
+      setWidth(divRef.current.offsetWidth);
+      setHeight(divRef.current.offsetHeight);
+    }
+  };
+
+
+
+
+
+  useEffect(() => {
+    console.log('gdfgd')
+    getDefPos();
+  }, [data]);
+
 
   const [scale, setScale] = useState(1);
 
@@ -109,7 +137,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
       setPosition({ x: position.x - dx * scale, y: position.y - dy * scale }); 
 
       // Обновление dragStart после каждого движения
-      setDragStart({ x: event.clientX, y: event.clientY }); 
+      // setDragStart({ x: event.clientX, y: event.clientY }); 
 
 
     }
@@ -130,28 +158,28 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
   }, [isDragging]);
 
   const handleZoom = (event: WheelEvent) => {
-    const zoomStep = 1.02; // Шаг зума
+    // const zoomStep = 1.02; // Шаг зума
+    const zoomStep = 0.1; 
     
-    // Обновляем положение SVG
-    // setPosition({
-    //   x: event.clientX + svgWidth / 2,
-    //   y: event.clientY + svgHeight / 2 
-    // });
+    setDragStart({ x: event.clientX, y: event.clientY }); 
 
-    if (event.deltaY < 0) {
-      setScale(scale * zoomStep);
-    } else {
-      setScale(scale / zoomStep);
+    if (event.deltaY < 0 && scale < zoomLimit.max) {
+      setScale(scale + zoomStep);
+
+      setPosition({ 
+        x: position.x - svgWidth * zoomStep / 2,
+        y: position.y - svgHeight * zoomStep / 2,
+      }); 
+
+    } else if (scale > zoomLimit.min) {
+      setScale(scale - zoomStep);
+
+      setPosition({ 
+        x: position.x + svgWidth * zoomStep / 2,
+        y: position.y + svgHeight * zoomStep / 2,
+      }); 
     }
-
-    // Определяем точку зума (курсор мыши)
-    const zoomPointX = event.clientX - position.x;
-    const zoomPointY = event.clientY - position.y;
-
-
   };
-
-
 
   useEffect(() => {
     document.addEventListener('wheel', handleZoom);
@@ -163,10 +191,15 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
   
   const getDefPos = () => {
-    setPosition({x: 0, y: 0});
+    setPosition({x: minX + (maxX - minX) / 2 - svgWidth / 2, y: minY + (maxY - minY) / 2 - svgHeight / 2});
     setScale(1);
   };
   
+
+
+
+  
+
 
   const StyledIconButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.common.white, // Сделаем иконку светлой
@@ -180,6 +213,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
   return (
     <div
+      className='prevent-select'
       style={{
         width: '100%',
         height: 'calc(100vh - 64px)',
@@ -191,8 +225,47 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
         backgroundColor: '#232324',
       }}
     >
-      {/* <div>{position.x}----{position.y}</div> */}
       <div
+        style={{
+          gridColumnStart: 1,
+          gridColumnEnd: 1,
+          gridRowStart: 2,
+          gridRowEnd: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'left',
+          color: 'white',
+        }}
+      >
+        <div>
+          <b>position : </b>{position.x.toFixed()}--{position.y.toFixed()}
+        </div>
+
+        <div>
+          <b>dragStart : </b>{dragStart.x.toFixed()}--{dragStart.y.toFixed()}
+        </div>
+        
+        <div> 
+          <b>svgHeight : </b>{svgHeight.toFixed()}
+        </div>
+        
+        <div> 
+          <b>svgWidth : </b>{svgWidth.toFixed()}
+        </div>
+        
+        <div> 
+          <b>viewbox : </b>{`${position.x.toFixed()} ${position.y.toFixed()} ${(scale * svgWidth).toFixed()} ${(scale * svgHeight).toFixed()}`}
+        </div>
+        <div> 
+          <b>x : </b>{x.toFixed()} y : {y.toFixed()}
+        </div>
+
+      </div>
+
+
+      {/* <div>{viewHeight}</div> */}
+      <div
+        className='.prevent-select'
         style={{
           gridColumnStart: 3,
           gridColumnEnd: 3,
@@ -211,6 +284,8 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
 
 
       {/* <div>{x}----{y}---{dragStart.x}--{dragStart.y}</div> */}
+      {/* <div>{x}----{y}</div> */}
+      {/* <div>{position.x}----{position.y}</div> */}
       <div
         ref={divRef}
         style={{
@@ -225,6 +300,8 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
       >
         <svg
           ref={svgRef}
+          // x: minX + (maxX - minX) / 2,
+          // y: minY + (maxY - minY) / 2,
           viewBox={`${position.x} ${position.y} ${scale * svgWidth} ${scale * svgHeight}`}
           onMouseDown={handleMouseDown}
           style={{
@@ -237,6 +314,21 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children, viewBox }) => {
           }}
         >
           {children}
+          {/* <circle r="45" cx={position.x + svgWidth * scale / 2 + (maxX - minX) / 2} cy={position.y + svgHeight * scale / 2 + (maxY - minY) / 2} fill="red" /> */}
+          
+
+
+          {/* <circle r="45" cx={position.x} cy={position.y} fill="red" />
+          <circle r="15" cx={position.x + svgWidth * scale / 2} cy={position.y + svgHeight * scale / 2} fill="green" />
+          <circle r="15" cx={maxX} cy={minY} fill="grey" />
+          <circle r="15" cx={minX} cy={maxY} fill="grey" />
+          <circle r="15" cx={minX} cy={minY} fill="grey" />
+          <circle 
+            r="25" 
+            cx={minX + (maxX - minX) / 2} 
+            cy={minY + (maxY - minY) / 2} 
+            fill="purple" 
+          /> */}
         </svg>
       </div>
     </div>

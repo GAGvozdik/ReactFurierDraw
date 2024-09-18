@@ -3,7 +3,7 @@ export interface State {
     points: Point[][];
     open: boolean;
     position: {x: number, y: number}
-  }
+}
   
 export interface Action {
   type: string;
