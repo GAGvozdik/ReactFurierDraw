@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import HideMenuItem from '../menu/HideMenuItem';
+import HideMenuItem from './HideMenuItem';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -10,7 +10,7 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import DownloadIcon from '@mui/icons-material/Download';
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
-import FileLoader from '../redux/FileLoader'; // Импортируйте ваш JSON файл
+import FileLoader from '../../redux/FileLoader'; // Импортируйте ваш JSON файл
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -18,17 +18,31 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import CustomSlider from '../menu/Slider'; // Импортируйте ваш компонент CustomSlider
+import CustomSlider from '../Slider'; // Импортируйте ваш компонент CustomSlider
 
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints, UpdatePosition, UpdateIsLineCompleted } from '../redux/actions'; // Импорт action
+
+import { 
+    UpdatePoints, 
+    UpdatePosition, 
+    UpdateIsLineCompleted,
+    UpdateArrowWidth,
+    UpdateLineWidth,
+    UpdateSpeed,
+    UpdateArrowNumb,
+    UpdateAnimLen,
+    UpdateContourLineWidth,
+    UpdateIsPlaying
+ } from '../../redux/actions'; // Импорт action
+
 import {      
     UpdateOpenCloseAction, 
     UpdateIsLineCompletedAction, 
     Point, 
     State, 
     UpdatePointsAction, 
-    UpdatePositionAction} from '../redux/types'; // Импорт action
+    UpdatePositionAction
+} from '../../redux/types'; // Импорт action
 
 
 
@@ -43,64 +57,94 @@ const initialAnimSpeed: number = 20;
 function HideMenuItems() {
 
 
-    
+    // TODO Update => update
+    // TODO code style
+    // TODO divide into few components
+    // TODO fix interface
+    // TODO define initial values by file
+    // TODO play pause works incorrect !!!!!!!!!!!!!!!!!!
+    // TODO zoom in last arrow
+    // TODO fix zoom
+    // TODO add points photo digitizer
+    // TODO move zoom return to hiding menu
+    // TODO fix hiding menu icons
+    // TODO divide hiding menu interface to style, anim options
+    // TODO add colorizer
+    // TODO add photo loader
+    // TODO add slider range changer with file limits
+    // TODO add second hiding panel
+    // TODO add mobile version using react native
+    // TODO add svg to giff converter & loader
+    // TODO make custom icons
+    // TODO make sprites
+    // TODO make light theme
+    // TODO add zoom to cursor
+    // TODO 
+    // TODO 
+    // TODO 
+    // TODO 
 
     const data = useSelector((state: State) => state.points);
-
 
     const dispatch = useDispatch();
 
     const handleIsLineComleted = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const isLineCompleted = event.target.value === "Complete line"; // Проверяем выбранное значение
-        dispatch<UpdateIsLineCompletedAction>(UpdateIsLineCompleted(isLineCompleted)); // Исправлено 
+        const isLineCompleted = event.target.value === "Complete line"; 
+        dispatch(UpdateIsLineCompleted(isLineCompleted)); 
+    };
+
+    const [arrowWidth, setArrowWidth] = useState(initialArrowWidth); 
+    const handleArrowWidth = (value: number) => {
+      setArrowWidth(value); 
+      dispatch(UpdateArrowWidth(arrowWidth));
+    };
+
+    const [lineWidthValue, setLineWidth] = useState(initialLineWidth); 
+    const handleLineWidth = (value: number) => {
+        setLineWidth(value); 
+        dispatch(UpdateLineWidth(lineWidthValue));
     };
 
     const [speedValue, setSpeedValue] = useState(initialAnimSpeed); 
-    const updateSpeed = (value: number) => {
+    const handleSpeed = (value: number) => {
         setSpeedValue(value); 
+        dispatch(UpdateSpeed(speedValue));
+    };
+
+    const [arrowNumb, setArrowNumb] = useState(initialArrowNumb); 
+    const handleArrowNumb = (value: number) => {
+      setArrowNumb(value); 
+      dispatch(UpdateArrowNumb(arrowNumb));
+    };
+
+    const [animLen, setAnimLen] = useState(initialAnimLenght); 
+    const handleAnimLen = (value: number) => {
+      setAnimLen(value); 
+      dispatch(UpdateAnimLen(animLen));
     };
 
     const [contourLineWidth, setContourLineWidth] = useState(initialCountourLineWidth); 
-    const updateContourLineWidth = (value: number) => {
+    const handleContourLineWidth = (value: number) => {
         setContourLineWidth(value); 
+        dispatch(UpdateContourLineWidth(contourLineWidth));
     };
 
-    
-    const [arrowWidthValue, setArrowWidth] = useState(initialArrowWidth); 
-    const updateArrowWidth = (value: number) => {
-      setArrowWidth(value); 
-    };
+    const [isAnimLenActive, setIsActive] = useState(true);
 
-    const [isActive, setIsActive] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
+
     const handlePlay = () => {
       setIsPlaying(true);
       setIsActive(false); 
+      dispatch(UpdateIsPlaying(isPlaying));
     };
   
     const handlePause = () => {
       setIsPlaying(false);
       setIsActive(true); 
+      dispatch(UpdateIsPlaying(isPlaying));
     };
   
-    
-    const [lineWidthValue, setLineWidth] = useState(initialLineWidth); 
-    const updateLineWidth = (value: number) => {
-        setLineWidth(value); 
-    };
-
-
-
-    const [arrowNumb, setArrowNumb] = useState(initialArrowNumb); 
-    const updatArrowNumb = (value: number) => {
-      setArrowNumb(value); 
-    };
-
-    const [animLen, setAnimLen] = useState(initialAnimLenght); 
-    const updatAnimLen = (value: number) => {
-      setAnimLen(value); 
-    };
-
     return(
         <div className="scrollbar my-style">
             <div className="force-overflow">
@@ -110,7 +154,7 @@ function HideMenuItems() {
                     menuIcon={<><SpeedIcon /></>}
                 >  
                     {/* TODO calculate max value from data config */}
-                    <CustomSlider onChange={updateSpeed} max={260} min={0} defaultValue={initialAnimSpeed} step={0.1}/>       
+                    <CustomSlider onChange={handleSpeed} max={260} min={0} defaultValue={initialAnimSpeed} step={0.1}/>       
                 </HideMenuItem>
 
 
@@ -119,7 +163,7 @@ function HideMenuItems() {
                     menuItemText = {'Line width'}
                     menuIcon={<><WidthNormalIcon /></>}
                 >         
-                    <CustomSlider onChange={updateContourLineWidth} max={2} min={0} defaultValue={initialCountourLineWidth} step={0.0001}/>       
+                    <CustomSlider onChange={handleContourLineWidth} max={2} min={0} defaultValue={initialCountourLineWidth} step={0.0001}/>       
                 </HideMenuItem>
 
                 {/* <HideMenuItem 
@@ -134,14 +178,14 @@ function HideMenuItems() {
                     menuItemText = {'Arrow width'}
                     menuIcon={<><EastOutlinedIcon /></>}
                 >       
-                    <CustomSlider onChange={updateArrowWidth} max={2} min={0} defaultValue={initialArrowWidth} step={0.0001}/>       
+                    <CustomSlider onChange={handleArrowWidth} max={2} min={0} defaultValue={initialArrowWidth} step={0.0001}/>       
                 </HideMenuItem>
 
                 <HideMenuItem 
                     menuItemText = {'Arrow number'}
                     menuIcon={<><CallSplitIcon /></>}
                 >          
-                    <CustomSlider onChange={updatArrowNumb} max={data ? data[0].length - 1 : 250} min={1} defaultValue={initialArrowNumb}/>       
+                    <CustomSlider onChange={handleArrowNumb} max={data ? data[0].length - 1 : 250} min={1} defaultValue={initialArrowNumb}/>       
                     <></>
                 </HideMenuItem>
                 
@@ -149,7 +193,7 @@ function HideMenuItems() {
                     menuItemText = {'Animation len'}
                     menuIcon={<><AccessTimeIcon /></>}
                 >          
-                    <CustomSlider onChange={updatAnimLen} max={data ? data.length : 2500} min={0} isActive={isActive} defaultValue={initialAnimLenght}/>       
+                    <CustomSlider onChange={handleAnimLen} max={data ? data.length : 2500} min={0} isActive={isAnimLenActive} defaultValue={initialAnimLenght}/>       
                 </HideMenuItem>
                 
                 <HideMenuItem 
@@ -202,7 +246,8 @@ function HideMenuItems() {
                     {/* <Button variant="outlined">Return default position</Button> */}
 
                 </HideMenuItem>
-        {/*                                 
+
+                {/*                                 
                 <HideMenuItem 
                     menuItemText = {''}
                     menuIcon={<><ZoomInMapIcon onClick={handleReturnZoom}/></>}

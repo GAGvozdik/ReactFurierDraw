@@ -6,7 +6,7 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
 import { useSelector, useDispatch } from 'react-redux';
-import { Point, State, UpdateOpenCloseAction } from '../redux/types'; // Импорт action
+import { Point, State, UpdateOpenCloseAction } from '../../redux/types'; // Импорт action
 
 interface HideMenuItemProps {
     children: React.ReactNode;

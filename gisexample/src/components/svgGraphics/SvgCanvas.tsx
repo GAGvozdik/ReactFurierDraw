@@ -251,15 +251,15 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           <b>debug : </b>{debug}
         </div> */}
 
-        <div>
+        {/* <div>
           <b>position : </b>{position.x.toFixed()}--{position.y.toFixed()}
-        </div>
+        </div> */}
 
         {/* <div>
           <b>dragStart : </b>{dragStart.x.toFixed()}--{dragStart.y.toFixed()}
         </div> */}
         
-        <div> 
+        {/* <div> 
           <b>svgHeight : </b>{svgHeight.toFixed()}
         </div>
         
@@ -267,12 +267,12 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           <b>svgWidth : </b>{svgWidth.toFixed()}
         </div>
         
-        {/* <div> 
+        <div> 
           <b>viewbox : </b>{`${position.x.toFixed()} ${position.y.toFixed()} ${(scale * svgWidth).toFixed()} ${(scale * svgHeight).toFixed()}`}
         </div>
         <div> 
           <b>x : </b>{x.toFixed()} y : {y.toFixed()}
-        </div> */}
+        </div>
         
         <div> 
           <b>crossX : </b>{(position.x + svgWidth * scale / 2).toFixed()}
@@ -284,7 +284,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
          
         <div> 
           <b>currentWidth : </b>{currentWidth.toFixed()} 
-        </div>
+        </div> */}
          
         
 
@@ -348,7 +348,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
             y1={position.y + svgHeight * scale / 2} 
             x2={position.x + svgWidth * scale / 2 + 12 * scale} 
             y2={position.y + svgHeight * scale / 2} 
-            stroke="red" 
+            stroke="grey" 
             strokeWidth={7 * scale}
           />
           <line 
@@ -356,7 +356,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
             y1={position.y + svgHeight * scale / 2 + 12 * scale} 
             x2={position.x + svgWidth * scale / 2} 
             y2={position.y + svgHeight * scale / 2 - 12 * scale} 
-            stroke="red" 
+            stroke="grey" 
             strokeWidth={7 * scale}
           />        
           <line 

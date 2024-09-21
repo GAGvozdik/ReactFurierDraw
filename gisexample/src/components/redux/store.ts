@@ -17,6 +17,13 @@ const initialState: State = {
   open: true,
   position: {x: 0, y: 0},
   isLineCompleted: true,
+  arrowWidth: 1.4,
+  lineWidth: 0.7,      
+  updateSpeed: 20,
+  arrowNumb: 20,
+  isPlaying: false,
+  animLen: 2000,
+  contourLineWidth: 1,
 };
 
 // Reducer-функция
@@ -35,11 +42,68 @@ const reducer = (state: State = initialState, action: Action): State => {
     case 'UPDATE_IS_LINE_COMPLETED':
       return { ...state, isLineCompleted: action.payload };
 
+    case 'UPDATE_ARROW_WIDTH':
+      return { ...state, arrowWidth: action.payload };
+
+    case 'UPDATE_LINE_WIDTH':
+      return { ...state, lineWidth: action.payload };
+
+    case 'UPDATE_SPEED':
+      return { ...state, updateSpeed: action.payload };
+
+    case 'UPDATE_ARROW_NUMB':
+      return { ...state, arrowNumb: action.payload };
+
+    case 'UPDATE_ANIM_LEN':
+      return { ...state, animLen: action.payload };
+
+    case 'UPDATE_CONTOUR_LINE_WIDTH':
+      return { ...state, contourLineWidth: action.payload };
+
+    case 'UPDATE_IS_PLAYING':
+      return { ...state, isPlaying: action.payload };
+
     default:
       return state;
   }
 };
 
-// Создание Store с типом действия
 const store = createStore<State, Action, {}>(reducer); 
+
 export default store;
+
+// arrowWidth = 1.4, // Значение по умолчанию
+// lineWidth = 0.7,      // Значение по умолчанию
+// updateSpeed = 20,
+// arrowNumb = 20,
+// isPlaying = false,
+// animLen = 2000,
+// contourLineWidth = 1,
+
+// UpdateArrowWidthAction
+// UpdateLineWidthAction
+// UpdateSpeedAction
+// UpdateArrowNumbAction
+// UpdateAnimLenAction
+// UpdateContourLineWidthAction
+// UpdateIsPlayingAction
+
+// UpdateArrowWidth
+// UpdateLineWidth
+// UpdateSpeed
+// UpdateArrowNumb
+// UpdateAnimLen
+// UpdateContourLineWidth
+// UpdateIsPlaying
+
+// 'UPDATE_ARROW_WIDTH'
+// 'UPDATE_LINE_WIDTH'
+// 'UPDATE_SPEED'
+// 'UPDATE_ARROW_NUMB'
+// 'UPDATE_ANIM_LEN'
+// 'UPDATE_CONTOUR_LINE_WIDTH'
+// 'UPDATE_IS_PLAYING'
+
+
+
+

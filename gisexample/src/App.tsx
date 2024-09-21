@@ -8,7 +8,7 @@ import CustomSlider from './components/menu/Slider'; // Импортируйте
 import Graph from './components/svgGraphics/Graph';
 import CustomAppBar from './components/menu/CustomAppBar';
 import SvgCanvas from './components/svgGraphics/SvgCanvas'; 
-import HideMenuItems from './components/menu/HideMenuItems'; 
+import HideMenuItems from './components/menu/menuItems/HideMenuItems'; 
 
 // import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
 
@@ -46,56 +46,20 @@ function App() {
     const [isTree, setIsTree] = useState(true); 
     const theme = useTheme();
 
-
-
-
-    
-
     const [zoomReturn, setZoomReturn] = useState<boolean>(false);
 
-
-    // TODO return zoom
+    // TODO fix return zoom
     const handleReturnZoom = () => {
         setZoomReturn(true); 
-
     }
 
-
-
-
-
-
-    const data = useSelector((state: State) => state.points);
-
-
-
-    //TODO что за open={true} ??!
     return (
         <div className="App" >
             <ThemeProvider theme={darkTheme}>
-                <CustomAppBar
-                    hideMenuChildren={
-                        <HideMenuItems></HideMenuItems>
-                    }
-                >
-                    <SvgCanvas
-                        // zoomReturn={zoomReturn}
-                    >
-                        <></>
-                        <Graph 
-                            // data={data}
-                            animLen={animLen}
-                            isPlaying={isPlaying}
-                            arrowWidth={arrowWidthValue} // Установите ширину наконечника на 15
-                            isLogSize={true} 
-                            lineWidth={lineWidthValue}      // Установите ширину линии на 5
-                            updateSpeed={speedValue}  // Установите скорость обновления на 500 мс
-                            arrowNumb={arrowNumb}
-                            contourLineWidth={contourLineWidth}
-                            
-                        />
+                <CustomAppBar hideMenuChildren={ <HideMenuItems /> }>
+                    <SvgCanvas >
+                        <Graph />
                     </SvgCanvas>
-
                 </CustomAppBar>
             </ThemeProvider>
         </div>

@@ -2,47 +2,26 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import Arrow from '../svgGraphics/Arrow';
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints } from '../redux/actions'; // Импорт action
-import { Point, State, UpdatePointsAction } from '../redux/types'; // Импорт action
+import { UpdatePoints } from '../redux/actions';
+import { Point, State, UpdatePointsAction } from '../redux/types';
 
 
-interface GraphProps {
-    arrowWidth?: number; // Ширина наконечника стрелки
-    lineWidth?: number;       // Ширина линии стрелки
-    updateSpeed?: number;     // Скорость обновления (в миллисекундах)
-    arrowNumb?: number;
-    isPlaying?: boolean; // Флаг, определяющий, запущена ли анимация
-    animLen?: number;
-    data?: number[][][];
-    contourLineWidth?: number;
-    isLogSize?: boolean;
-}
+const Graph: React.FC = ({}) => {
 
+    const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); 
 
-const initialArrowNumb: number = 20;
-const initialArrowWidth: number = 1.4;
-const initialLineWidth: number = 0.7;
-const initialCountourLineWidth: number = 1;
-const initialAnimLenght: number = 2000;
-const initialAnimSpeed: number = 20;
-
-const Graph: React.FC<GraphProps> = ({
-    arrowWidth = 1.4, // Значение по умолчанию
-    lineWidth = 0.7,      // Значение по умолчанию
-    updateSpeed = 20, // Значение по умолчанию 1000 мс
-    arrowNumb = 20,
-    isPlaying = false,
-    animLen = 2000,
-    contourLineWidth = 1,
-    isLogSize = false
-}) => {
-
-
-    const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); // Начальное состояние - данные из нулевого момента времени
-
-    const data = useSelector((state: State) => state.points);
-    const isLineCompleted = useSelector((state: State) => state.isLineCompleted);
-
+    let data = useSelector((state: State) => state.points);
+    let isLineCompleted = useSelector((state: State) => state.isLineCompleted);
+    let arrowWidth = useSelector((state: State) => state.arrowWidth);
+    let lineWidth = useSelector((state: State) => state.lineWidth);
+    let updateSpeed = useSelector((state: State) => state.updateSpeed);
+    let arrowNumb = useSelector((state: State) => state.arrowNumb);
+    let isPlaying = useSelector((state: State) => state.isPlaying);
+    let animLen = useSelector((state: State) => state.animLen);
+    let contourLineWidth = useSelector((state: State) => state.contourLineWidth);
+    
+    // TODO add feachure
+    let isLogSize = true;
 
 
     if (data != undefined){
@@ -53,9 +32,6 @@ const Graph: React.FC<GraphProps> = ({
             animLen = data.length;
         }
     }
-
-
-    // [[[0, 0], [200, 400], [200, 400]], [[0, 0], [700, 4210], [230, 440]], [[0, 40], [20, 100], [220, 300]]]
 
     let contourPoints: string = '';
     const [greenContourPoints, setGreenPoints] = useState<string>('0,0 200,200');
@@ -90,14 +66,11 @@ const Graph: React.FC<GraphProps> = ({
     useEffect(() => {
         if (arrowNumb - 1 < 0){}
         else{
+
+            // TODO rename greenpoints
             let greenpoints = data == undefined ? [[0, 0], [0, 0]] : data.slice(0, currentDataIndex + 1) .map(innerArray => innerArray[arrowNumb - 1]);
-            
             setGreenPoints(greenpoints.map(point => point.join(',')).join(' '));
-
-
         }
-
-        // setGreenPoints(greenContourPoints + ' ' + data[currentDataIndex][arrowNumb - 1][0] + ',' + data[currentDataIndex][arrowNumb - 1][1]);
     }, [currentDataIndex]);
 
     useEffect(() => {
@@ -112,8 +85,6 @@ const Graph: React.FC<GraphProps> = ({
                     data == undefined ? setCurrentData([[0, 0], [0, 0]]) : setCurrentData(data[newIndex]); // Обновляем currentData
                     return newIndex;
                 });
-
-                
 
             }, updateSpeed); // Используем переданную скорость обновления
 
@@ -157,7 +128,7 @@ const Graph: React.FC<GraphProps> = ({
             <polyline
                 points={greenContourPoints}
                 fill="none"
-                stroke="green"
+                stroke="#b3c213"
                 strokeWidth={contourLineWidth}
             />}
 
