@@ -41,6 +41,7 @@ const Graph: React.FC<GraphProps> = ({
     const [currentData, setCurrentData] = useState([[0, 0], [0, 0]]); // Начальное состояние - данные из нулевого момента времени
 
     const data = useSelector((state: State) => state.points);
+    const isLineCompleted = useSelector((state: State) => state.isLineCompleted);
 
 
 
@@ -57,6 +58,8 @@ const Graph: React.FC<GraphProps> = ({
     // [[[0, 0], [200, 400], [200, 400]], [[0, 0], [700, 4210], [230, 440]], [[0, 40], [20, 100], [220, 300]]]
 
     let contourPoints: string = '';
+    const [greenContourPoints, setGreenPoints] = useState<string>('0,0 200,200');
+
     let points: number[][] = [];
     let startArrows: number[][] = [];
     let startArrowsStr: string = '';
@@ -80,11 +83,22 @@ const Graph: React.FC<GraphProps> = ({
     }
 
     const [delArrowStart, setDelArrowStart] = useState(false);
-
-
     const svgRef = useRef<SVGSVGElement>(null);
     const [currentDataIndex, setCurrentDataIndex] = useState(0);
     const [animationInterval, setAnimationInterval] = useState<NodeJS.Timer | null>(null); // Храним интервал анимации
+
+    useEffect(() => {
+        if (arrowNumb - 1 < 0){}
+        else{
+            let greenpoints = data == undefined ? [[0, 0], [0, 0]] : data.slice(0, currentDataIndex + 1) .map(innerArray => innerArray[arrowNumb - 1]);
+            
+            setGreenPoints(greenpoints.map(point => point.join(',')).join(' '));
+
+
+        }
+
+        // setGreenPoints(greenContourPoints + ' ' + data[currentDataIndex][arrowNumb - 1][0] + ',' + data[currentDataIndex][arrowNumb - 1][1]);
+    }, [currentDataIndex]);
 
     useEffect(() => {
         // Функция для запуска анимации
@@ -98,6 +112,9 @@ const Graph: React.FC<GraphProps> = ({
                     data == undefined ? setCurrentData([[0, 0], [0, 0]]) : setCurrentData(data[newIndex]); // Обновляем currentData
                     return newIndex;
                 });
+
+                
+
             }, updateSpeed); // Используем переданную скорость обновления
 
             setAnimationInterval(interval);
@@ -129,12 +146,20 @@ const Graph: React.FC<GraphProps> = ({
 
     return (
         <>
-            <polyline
+
+            {isLineCompleted ? <polyline
                 points={contourPoints}
                 fill="none"
                 stroke="#b3c213"
                 strokeWidth={contourLineWidth}
             />
+                :
+            <polyline
+                points={greenContourPoints}
+                fill="none"
+                stroke="green"
+                strokeWidth={contourLineWidth}
+            />}
 
             {/* Отрисовка начального положения стрелок */}
             {!delArrowStart && startArrows.slice(0, arrowNumb).map((arrow, index) => {

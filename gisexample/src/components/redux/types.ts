@@ -2,7 +2,8 @@
 export interface State {
     points: Point[][];
     open: boolean;
-    position: {x: number, y: number}
+    position: {x: number, y: number};
+    isLineCompleted: boolean
 }
   
 export interface Action {
@@ -25,6 +26,12 @@ export interface UpdatePositionAction extends Action {
 
 export interface UpdateOpenCloseAction extends Action {
   type: 'UPDATE_OPEN';
+  payload: boolean;
+  [key: string]: any; 
+}
+
+export interface UpdateIsLineCompletedAction extends Action {
+  type: 'UPDATE_IS_LINE_COMPLETED';
   payload: boolean;
   [key: string]: any; 
 }

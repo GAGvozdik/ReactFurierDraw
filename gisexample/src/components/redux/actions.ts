@@ -1,4 +1,10 @@
-import { UpdatePointsAction, UpdateOpenCloseAction, UpdatePositionAction, Action } from './types';
+import { 
+  UpdatePointsAction, 
+  UpdateOpenCloseAction, 
+  UpdatePositionAction,
+  UpdateIsLineCompletedAction, 
+  Action } from './types';
+  
 import {Point} from './types'
 
 
@@ -15,4 +21,9 @@ export const UpdatePosition = (position: {x: number, y: number}): UpdatePosition
 export const UpdateOpenClose = (open: boolean): UpdateOpenCloseAction => ({
   type: 'UPDATE_OPEN',
   payload: open,
+});
+
+export const UpdateIsLineCompleted = (isLineCompleted: boolean): UpdateIsLineCompletedAction => ({
+  type: 'UPDATE_IS_LINE_COMPLETED',
+  payload: isLineCompleted,
 });

@@ -15,18 +15,26 @@ const initialState: State = {
   ],
 
   open: true,
-  position: {x: 0, y: 0}
+  position: {x: 0, y: 0},
+  isLineCompleted: true,
 };
 
 // Reducer-функция
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
+
     case 'UPDATE_POINTS':
       return { ...state, points: action.payload };
+
     case 'UPDATE_OPEN':
       return { ...state, open: action.payload };
+
     case 'UPDATE_POSITION':
       return { ...state, position: action.payload };
+
+    case 'UPDATE_IS_LINE_COMPLETED':
+      return { ...state, isLineCompleted: action.payload };
+
     default:
       return state;
   }

@@ -36,22 +36,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
   const minY = Math.min(...yValues);
   const maxY = Math.max(...yValues);
 
-  // Выполняем updateDimensions при монтировании, при изменении размера окна И при изменении размеров родительского элемента
-  useEffect(() => {
-    updateDimensions(); // Инициализация размеров при монтировании
-    window.addEventListener('resize', updateDimensions); // Добавляем обработчик события resize
-    const resizeObserver = new ResizeObserver(updateDimensions); // Создаем ResizeObserver
-    if (divRef.current) {
-      resizeObserver.observe(divRef.current); // Наблюдаем за изменениями размеров родительского элемента
-    }
-    return () => {
-      window.removeEventListener('resize', updateDimensions); // Удаляем обработчик события resize
-      resizeObserver.disconnect(); // Отключаем ResizeObserver при размонтировании
-      
-    };
 
-    
-  }, []);
 
 
   const divRef = useRef<HTMLDivElement>(null); // Создаем ref для div
@@ -71,14 +56,42 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
 
   const [isDragging, setIsDragging] = useState(false);
 
+  const [currentWidth, setCurrentWidth] = useState(0);
+
+
   // Функция для обновления размеров
   const updateDimensions = () => {
     if (divRef.current) {
-      setWidth(divRef.current.offsetWidth);
-      setHeight(divRef.current.offsetHeight);
+      const newWidth = divRef.current.offsetWidth;
+      const newHeight = divRef.current.offsetHeight;
+        
+      // Вычисляем половину разницы между старой и новой шириной
+      const widthDifference = (newWidth - currentWidth) / 2; 
+
+      setWidth(newWidth); 
+      setHeight(newHeight);
+      console.log('func compl'); 
+
+      // setPosition({
+      //   x: position.x + widthDifference, 
+      //   y: position.y,
+      // }); 
     }
   };
 
+  // Выполняем updateDimensions при монтировании, при изменении размера окна И при изменении размеров родительского элемента
+  useEffect(() => {
+    window.addEventListener('resize', updateDimensions); // Добавляем обработчик события resize
+    const resizeObserver = new ResizeObserver(updateDimensions); // Создаем ResizeObserver
+    if (divRef.current) {
+      resizeObserver.observe(divRef.current); // Наблюдаем за изменениями размеров родительского элемента
+    }
+    return () => {
+      window.removeEventListener('resize', updateDimensions); // Удаляем обработчик события resize
+      resizeObserver.disconnect(); // Отключаем ResizeObserver при размонтировании
+    };
+  }, [svgWidth]); // Добавляем зависимость от svgWidth
+    
   useEffect(() => {
     getDefPos();
   }, [data]);
@@ -87,8 +100,24 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
   useEffect(() => {
     // getDefPos();
 
-    setPosition({x: minX + (maxX - minX) / 2 - svgWidth * scale / 2, y: minY + (maxY - minY) / 2 - svgHeight * scale / 2});
-    console.log('getDefPos');
+    // updateDimensions();
+    // setPosition(
+    //   {
+    //     x: minX + (maxX - minX) / 2 - svgWidth * scale / 2, 
+    //     y: minY + (maxY - minY) / 2 - svgHeight * scale / 2
+    //   }
+    // );
+
+    setPosition(
+      {
+        x: position.x, 
+        y: position.y, 
+      }
+    );
+
+
+
+
     // setScale(1);
 
 
@@ -134,16 +163,6 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
 
   const handleZoom = (event: WheelEvent) => {
     const zoomStep = 1.1; // Шаг зума
-    
-    // cx={minX + (maxX - minX) / 2} 
-    // cy={minY + (maxY - minY) / 2} 
-    // cx={position.x + svgWidth * scale / 2} 
-    // cy={position.y + svgHeight * scale / 2} 
-    
-    // (minX + (maxX - minX) / 2) - (position.x + svgWidth * scale / 2) 
-    // (minY + (maxY - minY) / 2) - (position.y + svgHeight * scale / 2) 
-    
-
 
     if (event.deltaY <= 0 && scale < zoomLimit.max) {
       
@@ -151,8 +170,6 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         x: position.x - svgWidth * (zoomStep * scale - scale) / 2,
         y: position.y - svgHeight * (zoomStep * scale - scale) / 2,
       }); 
-
-      // console.log('handleZoom -')
 
       setScale(scale * zoomStep);
 
@@ -163,10 +180,25 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         x: position.x - svgWidth * (scale / zoomStep - scale) / 2,
         y: position.y - svgHeight * (scale / zoomStep - scale) / 2,
       }); 
-      // console.log('handleZoom + ')
+
     }
     
 
+  };
+
+  useEffect(()=>{
+
+      zoom2End();
+
+  }, []);
+  
+  const zoom2End = () => {
+    let windowScale = 2;
+    setPosition({ 
+      x: data[0][data.length - 1][0],
+      y: data[0][data.length - 1][1],
+    }); 
+    setScale(windowScale);
   };
 
   useEffect(() => {
@@ -241,6 +273,20 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         <div> 
           <b>x : </b>{x.toFixed()} y : {y.toFixed()}
         </div> */}
+        
+        <div> 
+          <b>crossX : </b>{(position.x + svgWidth * scale / 2).toFixed()}
+        </div>
+         
+        <div> 
+          <b>crossY : </b>{(position.y + svgHeight * scale / 2).toFixed()} 
+        </div>
+         
+        <div> 
+          <b>currentWidth : </b>{currentWidth.toFixed()} 
+        </div>
+         
+        
 
       </div>
 
@@ -336,12 +382,18 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           <circle r={5 * scale} cx={minX} cy={maxY} fill="grey" />
           <circle r={5 * scale} cx={minX} cy={minY} fill="grey" />
           <circle r={5 * scale} cx={maxX} cy={maxY} fill="grey" />
-
+          */}
+          {/* <circle 
+            r={7 * scale} 
+            cx={minX + (maxX - minX) / 2} 
+            cy={minY + (maxY - minY) / 2} 
+            fill="purple" 
+          />
           <circle 
             r={5 * scale} 
             cx={minX + (maxX - minX) / 2} 
             cy={minY + (maxY - minY) / 2} 
-            fill="purple" 
+            fill="black" 
           /> */}
         </svg>
       </div>
