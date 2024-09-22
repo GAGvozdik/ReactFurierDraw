@@ -34,7 +34,7 @@ const Graph: React.FC = ({}) => {
     }
 
     let contourPoints: string = '';
-    const [greenContourPoints, setGreenPoints] = useState<string>('0,0 200,200');
+    const [greenContourPoints, setGreenPoints] = useState<string>('');
 
     let points: number[][] = [];
     let startArrows: number[][] = [];

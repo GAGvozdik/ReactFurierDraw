@@ -1,43 +1,54 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import BasicSimpleTreeView from './components/menu/catalog';
-import { createStyles, makeStyles } from '@mui/material/styles'; // Или import { createStyles } from '@mui/styles';
+import { createStyles, makeStyles } from '@mui/material/styles'; 
 import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
 import theme from '../src/components/theme'; 
-import CustomSlider from './components/menu/Slider'; // Импортируйте ваш компонент CustomSlider
 import Graph from './components/svgGraphics/Graph';
 import CustomAppBar from './components/menu/CustomAppBar';
 import SvgCanvas from './components/svgGraphics/SvgCanvas'; 
-import HideMenuItems from './components/menu/menuItems/HideMenuItems'; 
-
-// import data from './data/data.json.gz'; // Импортируйте ваш JSON файл
-
+import FileLoader from './components/menu/menuItems/FileLoader';
+import CompleteLine from './components/menu/menuItems/CompleteLine';
+import ArrowWidth from './components/menu/menuItems/ArrowWidth';
+import AnimationSpeed from './components/menu/menuItems/AnimationSpeed';
+import ArrowNumber from './components/menu/menuItems/ArrowNumber';
+import AnimationPlay from './components/menu/menuItems/AnimationPlay';
+import ContourLineWidth from './components/menu/menuItems/ContourLineWidth';
+import ZoomSettings from './components/menu/menuItems/ZoomSettings';
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints, UpdatePosition, UpdateIsLineCompleted } from './components/redux/actions'; // Импорт action
-import {      
-    UpdateOpenCloseAction, 
-    UpdateIsLineCompletedAction, 
-    Point, 
-    State, 
-    UpdatePointsAction, 
-    UpdatePositionAction} from './components/redux/types'; // Импорт action
-
-
-
-import CssBaseline from '@mui/material/CssBaseline';
-
-const initialArrowNumb: number = 20;
-const initialArrowWidth: number = 1.4;
-const initialLineWidth: number = 0.7;
-const initialCountourLineWidth: number = 1;
-const initialAnimLenght: number = 2000;
-const initialAnimSpeed: number = 20;
+import { State } from './components/redux/types'; // Импорт action
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 });
+
+// TODO code style
+// TODO Update => update
+// TODO play pause works incorrect !!!!!!!!!!!!!!!!!!
+// TODO zoom in last arrow
+
+// TODO define initial values by file
+// TODO move zoom return to hiding menu
+// TODO fix zoom move after open of hiding menu
+// TODO add zoom to cursor
+// TODO add svg to giff converter & loader
+
+// TODO fix interface
+// TODO divide hiding menu interface to style, anim options
+// TODO add colorizer
+// TODO add second hiding panel
+// TODO fix hiding menu icons
+// TODO make custom icons
+// TODO make sprites
+// TODO make light theme
+// TODO add slider range changer with file limits
+
+// TODO add points photo digitizer
+// TODO add photo loader
+// TODO add mobile version using react native
+// TODO add user testing
 
 function App() {
 
@@ -56,7 +67,22 @@ function App() {
     return (
         <div className="App" >
             <ThemeProvider theme={darkTheme}>
-                <CustomAppBar hideMenuChildren={ <HideMenuItems /> }>
+                <CustomAppBar 
+                    hideMenuChildren={
+                        <div className="scrollbar my-style">
+                            <div className="force-overflow">
+                                <AnimationSpeed />
+                                <ContourLineWidth />
+                                <ArrowWidth />
+                                <ArrowNumber />
+                                <AnimationPlay />
+                                <CompleteLine />
+                                <ZoomSettings />
+                                <FileLoader />
+                            </div>
+                        </div>
+                    }
+                >
                     <SvgCanvas >
                         <Graph />
                     </SvgCanvas>

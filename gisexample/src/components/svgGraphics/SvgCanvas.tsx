@@ -186,20 +186,27 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
 
   };
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-      zoom2End();
+  //     zoom2End();
 
-  }, []);
+  // }, []);
   
-  const zoom2End = () => {
-    let windowScale = 2;
-    setPosition({ 
-      x: data[0][data.length - 1][0],
-      y: data[0][data.length - 1][1],
-    }); 
-    setScale(windowScale);
-  };
+  // const zoom2End = () => {
+
+  //   let windowScale = 2;
+    
+  //   if (data){
+
+  //     setPosition({ 
+  //       x: data[0][data.length - 1][0],
+  //       y: data[0][data.length - 1][1],
+  //     }); 
+
+  //     setScale(windowScale);
+  //   }
+
+  // };
 
   useEffect(() => {
     document.addEventListener('wheel', handleZoom);
@@ -328,8 +335,6 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
       >
         <svg
           ref={svgRef}
-          // x: minX + (maxX - minX) / 2,
-          // y: minY + (maxY - minY) / 2,
           viewBox={`${position.x} ${position.y} ${scale * svgWidth} ${scale * svgHeight}`}
           onMouseDown={handleMouseDown}
           style={{
@@ -344,36 +349,33 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
           {children}
 
           <line 
-            x1={position.x + svgWidth * scale / 2 - 12 * scale} 
-            y1={position.y + svgHeight * scale / 2} 
-            x2={position.x + svgWidth * scale / 2 + 12 * scale} 
-            y2={position.y + svgHeight * scale / 2} 
-            stroke="grey" 
-            strokeWidth={7 * scale}
-          />
-          <line 
-            x1={position.x + svgWidth * scale / 2} 
-            y1={position.y + svgHeight * scale / 2 + 12 * scale} 
-            x2={position.x + svgWidth * scale / 2} 
-            y2={position.y + svgHeight * scale / 2 - 12 * scale} 
-            stroke="grey" 
-            strokeWidth={7 * scale}
-          />        
-          <line 
             x1={position.x + svgWidth * scale / 2 - 9 * scale} 
             y1={position.y + svgHeight * scale / 2} 
             x2={position.x + svgWidth * scale / 2 + 9 * scale} 
             y2={position.y + svgHeight * scale / 2} 
-            stroke="black" 
+            stroke="grey" 
             strokeWidth={3 * scale}
+            strokeOpacity="0.6"
           />
+
           <line 
             x1={position.x + svgWidth * scale / 2} 
             y1={position.y + svgHeight * scale / 2 + 9 * scale} 
             x2={position.x + svgWidth * scale / 2} 
-            y2={position.y + svgHeight * scale / 2 - 9 * scale} 
-            stroke="black" 
+            y2={position.y + svgHeight * scale / 2 + 1.5 * scale} 
+            stroke="grey" 
             strokeWidth={3 * scale}
+            strokeOpacity="0.6"
+          />   
+
+          <line 
+            x1={position.x + svgWidth * scale / 2} 
+            y1={position.y + svgHeight * scale / 2 - 1.5 * scale} 
+            x2={position.x + svgWidth * scale / 2} 
+            y2={position.y + svgHeight * scale / 2 - 9 * scale} 
+            stroke="grey" 
+            strokeWidth={3 * scale}
+            strokeOpacity="0.6"
           />        
 
 

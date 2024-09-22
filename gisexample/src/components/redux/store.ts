@@ -22,7 +22,7 @@ const initialState: State = {
   updateSpeed: 20,
   arrowNumb: 20,
   isPlaying: false,
-  animLen: 2000,
+  animLen: 3999,
   contourLineWidth: 1,
 };
 
