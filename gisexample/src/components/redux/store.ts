@@ -25,6 +25,9 @@ const initialState: State = {
   animLen: 3999,
   contourLineWidth: 1,
   defaultZoom: true,
+  lastArrowEnd: {x: 0, y: 0},
+  zoomType: "Zoom to center",
+  
 };
 
 // Reducer-функция
@@ -66,6 +69,12 @@ const reducer = (state: State = initialState, action: Action): State => {
 
     case 'UPDATE_DEFAULT_ZOOM':
       return { ...state, defaultZoom: action.payload };
+
+      case 'UPDATE_LAST_ARROW_END':
+      return { ...state, lastArrowEnd: action.payload };
+
+      case 'UPDATE_ZOOM_TYPE':
+      return { ...state, zoomType: action.payload };
 
     default:
       return state;

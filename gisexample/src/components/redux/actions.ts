@@ -11,6 +11,8 @@ import {
   UpdateContourLineWidthAction,
   UpdateIsPlayingAction,
   UpdateDefaultZoomAction,
+  UpdateLastArrowEndAction,
+  UpdateZoomTypeAction,
   Action 
 } from './types';
 
@@ -75,5 +77,16 @@ export const UpdateOpenClose = (open: boolean): UpdateOpenCloseAction => ({
 export const UpdateIsLineCompleted = (isLineCompleted: boolean): UpdateIsLineCompletedAction => ({
   type: 'UPDATE_IS_LINE_COMPLETED',
   payload: isLineCompleted,
+});
+
+export const UpdateLastArrowEnd = (lastArrowEnd: {x: number, y: number}): UpdateLastArrowEndAction => ({
+  type: 'UPDATE_LAST_ARROW_END',
+  payload: lastArrowEnd,
+});
+
+
+export const UpdateZoomType = (zoomType: "Zoom to center" | "Zoom to mouse" | "Zoom to last arrow"): UpdateZoomTypeAction => ({
+  type: 'UPDATE_ZOOM_TYPE',
+  payload: zoomType,
 });
 

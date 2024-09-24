@@ -24,13 +24,12 @@ const darkTheme = createTheme({
   },
 });
 
+// TODO ERROR IN GRAPH
 // TODO code style
 // TODO Update => update
-// TODO play pause works incorrect !!!!!!!!!!!!!!!!!!
 // TODO zoom in last arrow
 
 // TODO define initial values by file
-// TODO move zoom return to hiding menu
 // TODO fix zoom move after open of hiding menu
 // TODO add zoom to cursor
 // TODO add svg to giff converter & loader

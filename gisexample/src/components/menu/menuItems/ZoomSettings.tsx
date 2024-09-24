@@ -10,6 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import {UpdateDefaultZoom} from '../../redux/actions'; 
+import {UpdateZoomType} from '../../redux/actions'; 
 import {UpdateOpenCloseAction} from '../../redux/types'; 
 import {State} from '../../redux/types';
 
@@ -34,15 +35,15 @@ function ZoomSettings() {
 
     };
 
+    const handleZoomType = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const zoomToCenter = event.target.value === "Zoom to center"; 
+        const zoomToMouse = event.target.value === "Zoom to mouse"; 
+        const zoomToLastArrow = event.target.value === "Zoom to last arrow"; 
 
+        dispatch(UpdateZoomType("Zoom to center"));
 
+    };
 
-    // dispatch<UpdatePointsAction>(UpdatePoints(newPoints));
-
-    // const handleIsLineComleted = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const isLineCompleted = event.target.value === "Complete line"; 
-    //     dispatch(UpdateIsLineCompleted(isLineCompleted)); 
-    // };
 
     return(
         <>
@@ -56,7 +57,7 @@ function ZoomSettings() {
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="Zoom to center"
                         name="radio-buttons-group"
-                        // onChange={handleIsLineComleted}
+                        onChange={handleZoomType}
                     >
                         <FormControlLabel value="Zoom to center" control={<Radio />} label="Zoom to center" />
                         <FormControlLabel value="Zoom to mouse" control={<Radio />} label="Zoom to mouse" />

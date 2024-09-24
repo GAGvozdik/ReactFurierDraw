@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import Arrow from '../svgGraphics/Arrow';
+import Arrow from './svgElements/Arrow';
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdatePoints } from '../redux/actions';
+import { UpdatePoints, UpdateLastArrowEnd } from '../redux/actions';
 import { Point, State, UpdatePointsAction } from '../redux/types';
 
 
@@ -20,6 +20,9 @@ const Graph: React.FC = ({}) => {
     let animLen = useSelector((state: State) => state.animLen);
     let contourLineWidth = useSelector((state: State) => state.contourLineWidth);
     
+    
+    const dispatch = useDispatch();
+
     // TODO add feachure
     let isLogSize = true;
 
@@ -35,6 +38,7 @@ const Graph: React.FC = ({}) => {
 
     let contourPoints: string = '';
     const [greenContourPoints, setGreenPoints] = useState<string>('');
+    const [lastArrowEnd, setLastArrowEnd] = useState({x: 0, y: 0});
 
     let points: number[][] = [];
     let startArrows: number[][] = [];
@@ -70,6 +74,10 @@ const Graph: React.FC = ({}) => {
             // TODO rename greenpoints
             let greenpoints = data == undefined ? [[0, 0], [0, 0]] : data.slice(0, currentDataIndex + 1) .map(innerArray => innerArray[arrowNumb - 1]);
             setGreenPoints(greenpoints.map(point => point.join(',')).join(' '));
+
+            //EEEEEEEEERRRRRRRROOOOOOOOOORRRRRRR ERROR
+            data == undefined ? setLastArrowEnd({x: 0, y: 0}) : setLastArrowEnd({x: greenpoints[-1][0], y: greenpoints[-1][0]});
+            // dispatch(UpdateLastArrowEnd(lastArrowEnd));
         }
     }, [currentDataIndex]);
 
@@ -113,23 +121,8 @@ const Graph: React.FC = ({}) => {
         };
     }, [isPlaying, updateSpeed, data]);
 
-    const [f, setF] = useState(0);
-    useEffect(() => {
-        setF(f + 1);
-    }, [isPlaying]);
-
-
     return (
         <>
-            {/* <text
-                cx='200'
-                cy='200'
-                fill="white"
-                stroke="#white"
-            > 
-                {isPlaying ? 'true' : 'false'} 
-                {f}
-            </text> */}
 
             {isLineCompleted ? <polyline
                 points={contourPoints}
@@ -168,14 +161,14 @@ const Graph: React.FC = ({}) => {
                                 : 
                                 lineWidth
                                 
-                            }   // Используем переданную ширину линии
+                            }   
 
                             endWidth={
                                 isLogSize ? 
                                 Math.pow((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0), 0.5) / (10 / arrowWidth)
                                 : 
                                 arrowWidth
-                            } // Используем переданную ширину наконечника
+                            } 
 
                             x0={x0}
                             y0={y0}

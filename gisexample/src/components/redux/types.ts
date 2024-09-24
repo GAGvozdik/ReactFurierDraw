@@ -12,6 +12,8 @@ export interface State {
     animLen: number,
     contourLineWidth: number,
     defaultZoom: boolean,
+    lastArrowEnd: {x: number, y: number};
+    zoomType: "Zoom to center" | "Zoom to mouse" | "Zoom to last arrow";
 }
   
 export interface Action {
@@ -91,6 +93,18 @@ export interface UpdateAnimLenAction extends Action {
 export interface UpdateContourLineWidthAction extends Action {
   type: 'UPDATE_CONTOUR_LINE_WIDTH';
   payload: number;
+  [key: string]: any; 
+}
+export interface UpdateLastArrowEndAction extends Action {
+  type: 'UPDATE_LAST_ARROW_END';
+  payload: {x: number, y: number};
+  [key: string]: any; 
+}
+
+
+export interface UpdateZoomTypeAction extends Action {
+  type: 'UPDATE_ZOOM_TYPE';
+  payload: "Zoom to center" | "Zoom to mouse" | "Zoom to last arrow";
   [key: string]: any; 
 }
 
