@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {UpdateLineWidth} from '../../redux/actions'; 
 import CustomSlider from '../Slider'; 
 import WidthNormalIcon from '@mui/icons-material/WidthNormal';
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 
 const initialLineWidth: number = 0.7;
 

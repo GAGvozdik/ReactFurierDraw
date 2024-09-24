@@ -73,34 +73,32 @@ const Graph: React.FC = ({}) => {
         }
     }, [currentDataIndex]);
 
+    const startAnimation = () => {
+        const svg = d3.select(svgRef.current);
+        const totalFrames = animLen;
+
+        const interval = setInterval(() => {
+            setCurrentDataIndex(prevIndex => {
+                const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
+                data == undefined ? setCurrentData([[0, 0], [0, 0]]) : setCurrentData(data[newIndex]);
+                return newIndex;
+            });
+
+        }, updateSpeed);
+
+        setAnimationInterval(interval);
+    };
+
+    // Функция для остановки анимации
+    const stopAnimation = () => {
+        if (animationInterval) {
+            clearInterval(animationInterval);
+            setAnimationInterval(null);
+        }
+    };
+
     useEffect(() => {
-        // Функция для запуска анимации
-        const startAnimation = () => {
-            const svg = d3.select(svgRef.current);
-            const totalFrames = animLen;
-
-            const interval = setInterval(() => {
-                setCurrentDataIndex(prevIndex => {
-                    const newIndex = (prevIndex + 1) % totalFrames; // Зацикливаем индекс
-                    data == undefined ? setCurrentData([[0, 0], [0, 0]]) : setCurrentData(data[newIndex]); // Обновляем currentData
-                    return newIndex;
-                });
-
-            }, updateSpeed); // Используем переданную скорость обновления
-
-            setAnimationInterval(interval);
-        };
-
-        // Функция для остановки анимации
-        const stopAnimation = () => {
-            if (animationInterval) {
-                clearInterval(animationInterval);
-                setAnimationInterval(null);
-            }
-        };
-
-        // Запускаем анимацию, если isPlaying true
-        if (isPlaying) {
+        if (isPlaying == true) {
             startAnimation();
             setDelArrowStart(true);
         } else {
@@ -115,8 +113,23 @@ const Graph: React.FC = ({}) => {
         };
     }, [isPlaying, updateSpeed, data]);
 
+    const [f, setF] = useState(0);
+    useEffect(() => {
+        setF(f + 1);
+    }, [isPlaying]);
+
+
     return (
         <>
+            {/* <text
+                cx='200'
+                cy='200'
+                fill="white"
+                stroke="#white"
+            > 
+                {isPlaying ? 'true' : 'false'} 
+                {f}
+            </text> */}
 
             {isLineCompleted ? <polyline
                 points={contourPoints}

@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import WidthNormalIcon from '@mui/icons-material/WidthNormal';
 import CustomSlider from '../Slider'; 
 import { useSelector, useDispatch } from 'react-redux';

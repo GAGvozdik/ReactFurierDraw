@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import SpeedIcon from '@mui/icons-material/Speed';
 import CustomSlider from '../Slider'; 
 import { useSelector, useDispatch } from 'react-redux';

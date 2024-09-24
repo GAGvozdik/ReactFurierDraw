@@ -1,7 +1,7 @@
 
 import React, {useEffect, useState} from 'react';
 
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import CustomSlider from '../Slider'; 
 import { useSelector, useDispatch } from 'react-redux';

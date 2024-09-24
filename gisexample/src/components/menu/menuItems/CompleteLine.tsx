@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';

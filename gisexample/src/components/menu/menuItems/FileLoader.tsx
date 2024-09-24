@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { UpdatePoints } from '../../redux/actions'; 
 import { Point, State, UpdatePointsAction } from '../../redux/types'; 
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
 
 const FileLoader: React.FC = () => {

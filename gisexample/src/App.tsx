@@ -1,26 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import BasicSimpleTreeView from './components/menu/catalog';
-import { createStyles, makeStyles } from '@mui/material/styles'; 
-import { Theme, createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
-import theme from '../src/components/theme'; 
-import Graph from './components/svgGraphics/Graph';
-import CustomAppBar from './components/menu/CustomAppBar';
-import SvgCanvas from './components/svgGraphics/SvgCanvas'; 
-import FileLoader from './components/menu/menuItems/FileLoader';
-import CompleteLine from './components/menu/menuItems/CompleteLine';
-import ArrowWidth from './components/menu/menuItems/ArrowWidth';
-import AnimationSpeed from './components/menu/menuItems/AnimationSpeed';
-import ArrowNumber from './components/menu/menuItems/ArrowNumber';
-import AnimationPlay from './components/menu/menuItems/AnimationPlay';
-import ContourLineWidth from './components/menu/menuItems/ContourLineWidth';
-import ZoomSettings from './components/menu/menuItems/ZoomSettings';
-import { useSelector, useDispatch } from 'react-redux';
-import { State } from './components/redux/types'; // Импорт action
+import React, {useEffect, useState} from "react";
+import "./App.css";
+import BasicSimpleTreeView from "./components/menu/catalog";
+import { createStyles, makeStyles } from "@mui/material/styles"; 
+import { Theme, createTheme, ThemeProvider, useTheme} from "@mui/material/styles";
+import theme from "../src/components/theme"; 
+import Graph from "./components/svgGraphics/Graph";
+import CustomAppBar from "./components/menu/CustomAppBar";
+import SvgCanvas from "./components/svgGraphics/SvgCanvas"; 
+import FileLoader from "./components/menu/menuItems/FileLoader";
+import CompleteLine from "./components/menu/menuItems/CompleteLine";
+import ArrowWidth from "./components/menu/menuItems/ArrowWidth";
+import AnimationSpeed from "./components/menu/menuItems/AnimationSpeed";
+import ArrowNumber from "./components/menu/menuItems/ArrowNumber";
+import AnimationPlay from "./components/menu/menuItems/AnimationPlay";
+import ContourLineWidth from "./components/menu/menuItems/ContourLineWidth";
+import ZoomSettings from "./components/menu/menuItems/ZoomSettings";
+import { useSelector, useDispatch } from "react-redux";
+import { State } from "./components/redux/types"; // Импорт action
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import SpeedIcon from '@mui/icons-material/Speed';

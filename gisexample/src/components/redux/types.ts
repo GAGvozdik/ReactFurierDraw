@@ -18,6 +18,9 @@ export interface Action {
   payload?: any;
 }
 
+
+
+
 export interface UpdatePointsAction extends Action {
   type: 'UPDATE_POINTS';
   payload: Point[][];
@@ -30,6 +33,11 @@ export interface UpdatePositionAction extends Action {
   [key: string]: any;  
 }
 
+export interface UpdateIsPlayingAction extends Action {
+  type: 'UPDATE_IS_PLAYING';
+  payload: boolean;
+  [key: string]: any; 
+}
 
 export interface UpdateOpenCloseAction extends Action {
   type: 'UPDATE_OPEN';
@@ -79,11 +87,6 @@ export interface UpdateContourLineWidthAction extends Action {
   [key: string]: any; 
 }
 
-export interface UpdateIsPlayingAction extends Action {
-  type: 'UPDATE_IS_PLAYING';
-  payload: boolean;
-  [key: string]: any; 
-}
 
 
 

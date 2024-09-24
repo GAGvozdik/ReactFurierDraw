@@ -348,6 +348,23 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         >
           {children}
 
+          {/* <line 
+            x1={position.x + svgWidth * scale / 2 - 10 * scale} 
+            y1={position.y + svgHeight * scale / 2} 
+            x2={position.x + svgWidth * scale / 2 + 10 * scale} 
+            y2={position.y + svgHeight * scale / 2} 
+            stroke="#101010" 
+            strokeWidth={5 * scale}
+          />
+          <line 
+            x1={position.x + svgWidth * scale / 2} 
+            y1={position.y + svgHeight * scale / 2 + 10 * scale} 
+            x2={position.x + svgWidth * scale / 2} 
+            y2={position.y + svgHeight * scale / 2 - 10 * scale} 
+            stroke="#101010" 
+            strokeWidth={5 * scale}
+          />         */}
+
           <line 
             x1={position.x + svgWidth * scale / 2 - 9 * scale} 
             y1={position.y + svgHeight * scale / 2} 
@@ -355,7 +372,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
             y2={position.y + svgHeight * scale / 2} 
             stroke="grey" 
             strokeWidth={3 * scale}
-            strokeOpacity="0.6"
+            strokeOpacity="1.0"
           />
 
           <line 
@@ -365,7 +382,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
             y2={position.y + svgHeight * scale / 2 + 1.5 * scale} 
             stroke="grey" 
             strokeWidth={3 * scale}
-            strokeOpacity="0.6"
+            strokeOpacity="1.0"
           />   
 
           <line 
@@ -375,7 +392,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
             y2={position.y + svgHeight * scale / 2 - 9 * scale} 
             stroke="grey" 
             strokeWidth={3 * scale}
-            strokeOpacity="0.6"
+            strokeOpacity="1.0"
           />        
 
 

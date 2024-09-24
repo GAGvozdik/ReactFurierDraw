@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import HideMenuItem from './HideMenuItem';
+import HideMenuItem from '../HideMenuItem';
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import CustomSlider from '../Slider'; 
 import { useSelector, useDispatch } from 'react-redux';
