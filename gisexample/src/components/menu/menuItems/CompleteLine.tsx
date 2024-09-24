@@ -13,6 +13,7 @@ function CompleteLine() {
     
     const dispatch = useDispatch();
 
+
     const handleIsLineComleted = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isLineCompleted = event.target.value === "Complete line"; 
         dispatch(UpdateIsLineCompleted(isLineCompleted)); 

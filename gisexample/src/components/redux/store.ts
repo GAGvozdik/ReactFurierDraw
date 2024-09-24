@@ -24,6 +24,7 @@ const initialState: State = {
   isPlaying: false,
   animLen: 3999,
   contourLineWidth: 1,
+  defaultZoom: true,
 };
 
 // Reducer-функция
@@ -62,6 +63,9 @@ const reducer = (state: State = initialState, action: Action): State => {
 
     case 'UPDATE_IS_PLAYING':
       return { ...state, isPlaying: action.payload };
+
+    case 'UPDATE_DEFAULT_ZOOM':
+      return { ...state, defaultZoom: action.payload };
 
     default:
       return state;

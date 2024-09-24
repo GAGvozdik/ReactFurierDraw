@@ -11,6 +11,7 @@ export interface State {
     isPlaying: boolean,
     animLen: number,
     contourLineWidth: number,
+    defaultZoom: boolean,
 }
   
 export interface Action {
@@ -47,6 +48,12 @@ export interface UpdateOpenCloseAction extends Action {
 
 export interface UpdateIsLineCompletedAction extends Action {
   type: 'UPDATE_IS_LINE_COMPLETED';
+  payload: boolean;
+  [key: string]: any; 
+}
+
+export interface UpdateDefaultZoomAction extends Action {
+  type: 'UPDATE_DEFAULT_ZOOM';
   payload: boolean;
   [key: string]: any; 
 }

@@ -10,6 +10,7 @@ import {
   UpdateAnimLenAction,
   UpdateContourLineWidthAction,
   UpdateIsPlayingAction,
+  UpdateDefaultZoomAction,
   Action 
 } from './types';
 
@@ -59,6 +60,11 @@ export const UpdateContourLineWidth = (contourLineWidth: number): UpdateContourL
 export const UpdateIsPlaying = (isPlaying: boolean): UpdateIsPlayingAction => ({
   type: 'UPDATE_IS_PLAYING',
   payload: isPlaying,
+});
+
+export const UpdateDefaultZoom = (defaultZoom: boolean): UpdateDefaultZoomAction => ({
+  type: 'UPDATE_DEFAULT_ZOOM',
+  payload: defaultZoom,
 });
 
 export const UpdateOpenClose = (open: boolean): UpdateOpenCloseAction => ({

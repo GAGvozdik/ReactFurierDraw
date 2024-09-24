@@ -92,9 +92,12 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
     };
   }, [svgWidth]); // Добавляем зависимость от svgWidth
     
+
+  const defaultZoom = useSelector((state: State) => state.defaultZoom);
+
   useEffect(() => {
     getDefPos();
-  }, [data]);
+  }, [data, defaultZoom]);
 
 
   useEffect(() => {
@@ -299,7 +302,9 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
 
 
       {/* <div>{viewHeight}</div> */}
-      <div
+
+      
+      {/* <div
         className='.prevent-select'
         style={{
           gridColumnStart: 3,
@@ -314,7 +319,7 @@ const SvgCanvas: React.FC<AppBarProps> = ({ children }) => {
         <StyledIconButton onClick={getDefPos}>
           <ZoomInMapIcon />
         </StyledIconButton>
-      </div>
+      </div> */}
 
 
 
