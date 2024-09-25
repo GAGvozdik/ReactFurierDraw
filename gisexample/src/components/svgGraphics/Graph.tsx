@@ -76,7 +76,9 @@ const Graph: React.FC = ({}) => {
             setGreenPoints(greenpoints.map(point => point.join(',')).join(' '));
 
             //EEEEEEEEERRRRRRRROOOOOOOOOORRRRRRR ERROR
-            data == undefined ? setLastArrowEnd({x: 0, y: 0}) : setLastArrowEnd({x: greenpoints[-1][0], y: greenpoints[-1][0]});
+            // data == undefined ? setLastArrowEnd({x: 0, y: 0}) : setLastArrowEnd({x: greenpoints[-1][0], y: greenpoints[-1][0]});
+
+            setLastArrowEnd({x: 0, y: 0});
             // dispatch(UpdateLastArrowEnd(lastArrowEnd));
         }
     }, [currentDataIndex]);
